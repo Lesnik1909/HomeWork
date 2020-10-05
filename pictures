@@ -1,0 +1,15 @@
+using System;
+
+namespace HomeWork
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            int picture = 52;
+            int pictureInRow = 3;
+            Console.WriteLine((picture / pictureInRow) + " полностью заполненых рядов с картиками");
+            Console.WriteLine((picture % pictureInRow) + " картинок сверх меры");
+        }
+    }
+}
