@@ -1,0 +1,21 @@
+using System;
+
+namespace HomeWork
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            int countGems;
+            string name;
+            string surname;
+            int age;
+            float percent;
+            bool lie;
+            int countGold;
+            int iterationCounter;
+            float coefficient;
+            char firstIn;
+        }
+    }
+}
