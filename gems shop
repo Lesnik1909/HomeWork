@@ -1,0 +1,29 @@
+using System;
+
+namespace HomeWork
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            int gold;
+            int gems;
+            int priceGems = 100;
+            bool enoughMoney;
+
+            Console.WriteLine("Добро пожаловать в наш чудный магазин.");
+            Console.WriteLine ("Только у нас вы может за каких- то " + priceGems + " золотых монет покупать Лучшие алмазы!");
+            Console.Write("Сколько у тебя денег? ");
+            gold = Convert.ToInt32(Console.ReadLine());
+            Console.Write("Сколько алмазов тебе нужно? ");
+            gems = Convert.ToInt32(Console.ReadLine());
+
+            enoughMoney = gold >= gems * priceGems;
+            gems *= Convert.ToInt32(enoughMoney);
+
+            gold -= gems * priceGems;
+
+            Console.WriteLine("Вы купили " + gems + " алмаза, у вас осталось " + gold + " монет.");
+        }
+    }
+}
