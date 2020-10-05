@@ -1,0 +1,22 @@
+using System;
+
+namespace HomeWork
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            int people;
+            int appointmentTime = 10;
+            int hours;
+            int minutes;
+
+            Console.Write("Введите кол-во старушек: ");
+            people = Convert.ToInt32(Console.ReadLine());
+
+            hours = people * appointmentTime / 60;
+            minutes = people * appointmentTime % 60;
+            Console.WriteLine("Вы должны стоять в очереди " + hours + " часа и " + minutes + " минут.");
+        }
+    }
+}
