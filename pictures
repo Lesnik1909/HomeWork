@@ -1,6 +1,6 @@
 using System;
 
-namespace HomeWork
+namespace HomeWork3
 {
     class Program
     {
@@ -8,8 +8,12 @@ namespace HomeWork
         {
             int picture = 52;
             int pictureInRow = 3;
-            Console.WriteLine((picture / pictureInRow) + " полностью заполненых рядов с картиками");
-            Console.WriteLine((picture % pictureInRow) + " картинок сверх меры");
+            int fullPicturse;
+            int overFull;
+            fullPicturse = picture / pictureInRow;
+            overFull = picture % pictureInRow;
+            Console.WriteLine(fullPicturse + " полностью заполненых рядов с картиками");
+            Console.WriteLine(overFull + " картинок сверх меры");
         }
     }
 }
