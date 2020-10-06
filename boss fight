@@ -9,7 +9,7 @@ namespace HomeWork
             float healthHero = 1000;
             float healthHeroMax = 1000;
             int damageHero = 100;
-            float armorHero = 25;
+            float armorHero = 20;
             float armorHeroMax = armorHero;
             float healthBoss = 10000;
             float healthBossMax = 10000;
@@ -18,31 +18,35 @@ namespace HomeWork
             float armorBossMax = armorBoss;
             string namePlayer;
             int classPlayer = 1;
-            int t = 0;
-            int x = 0;
+            int iteratorCycle;
             int healPot = 3;
             int powerPotCount = 3;
             int powerPot = 1;
-            int i = 1;
-            int j = 0;
+            int cursorPosition = 0;
             int plaerInput;
             Random rand = new Random();
             float damage;
             int rageHero = 0;
+            int rageHeroMax = 10;
             int rageBoss = 0;
+            int rageBossMax = 5;
+            int strongBeatCost = 3;
             int defCooldown = 0;
             int stunTime = 0;
             int stunCooldown = 0;
             float heal;
             int healHero = 500;
             int healBoss = 2000;
+            int healBossInterval = 7;
+            bool exitCycle = true;
+            int roundCounter = 1;
 
             Console.Write("Приветстыую тебя герой! \nКак мне обращаться к тебе?\nВведите ваше имя: ");
             namePlayer = Console.ReadLine();
             Console.Clear();
 
             Console.WriteLine("Отлично " + namePlayer + " а кто же ты? выбери специализацию указав число от 1 до 3");
-            while (t <= 0) {          
+            while (exitCycle == true) {          
                 Console.WriteLine("1 - Бесстрашный рыцарь (слабая атака, но сильная броня)");
                 Console.WriteLine("2 - Ловкий разбойник (средние показатили атаки и брони)");
                 Console.WriteLine("3 - Яростный берсерк (Мощная атака, но слабая броня)");
@@ -51,30 +55,31 @@ namespace HomeWork
                 switch (classPlayer)
                 {
                     case 1:
-                        armorHeroMax += 50;
+                        armorHeroMax += 40;
                         armorHero = armorHeroMax;
-                        t++;
+                        exitCycle = false;
                         break;
                     case 2:
                         damageHero += 50;
-                        armorHeroMax += 25;
+                        armorHeroMax += 20;
                         armorHero = armorHeroMax;
-                        t++;
+                        exitCycle = false;
                         break;
                     case 3:
                         damageHero += 100;
-                        t++;
+                        exitCycle = false;
                         break;
                     default:
                         Console.WriteLine("Выберите число от 1 до 3");
                         break;
                 }
             }
+            exitCycle = true;
 
             Console.Clear();
             Console.WindowHeight = 60;
             Console.WindowWidth = 150;
-            Console.WriteLine("РАУНД " + i);
+            Console.WriteLine("РАУНД " + roundCounter);
             Console.SetCursorPosition(30, 0);
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("Грок Уничтожитель");
@@ -126,9 +131,9 @@ namespace HomeWork
             Console.WriteLine("===========================================");
             Console.SetCursorPosition(55, 0);
             Console.Write("Ярость: ");
-            for (x = 1; x < 6; x++)
+            for (iteratorCycle = 1; iteratorCycle < rageBossMax + 1; iteratorCycle++)
             {
-                if (x <= rageBoss)
+                if (iteratorCycle <= rageBoss)
                 {
                     Console.ForegroundColor = ConsoleColor.DarkRed;
                     Console.Write("+");
@@ -142,9 +147,9 @@ namespace HomeWork
             Console.ForegroundColor = ConsoleColor.DarkGreen;
             Console.SetCursorPosition(55, 4);
             Console.Write("Ярость: ");
-            for (x = 1; x < 11; x++)
+            for (iteratorCycle = 1; iteratorCycle < rageHeroMax + 1; iteratorCycle++)
             {
-                if (x <= rageHero)
+                if (iteratorCycle <= rageHero)
                 {
                     Console.ForegroundColor = ConsoleColor.DarkRed;
                     Console.Write("+");
@@ -174,10 +179,10 @@ namespace HomeWork
             Console.SetCursorPosition(65, 17);
             Console.WriteLine("Доступно при 30% здоровья цели, наносит 600% урона, но расходует 3 ярости");
             Console.ForegroundColor = ConsoleColor.White;
-            Console.SetCursorPosition(0, i + j);
-            while (i > 0)
+            Console.SetCursorPosition(0, roundCounter + cursorPosition);
+            while (roundCounter > 0)
             {
-                if (rageHero < 3)
+                if (rageHero < strongBeatCost)
                 {
                     Console.SetCursorPosition(30, 12);
                     Console.ForegroundColor = ConsoleColor.DarkGray;
@@ -213,9 +218,9 @@ namespace HomeWork
                     Console.SetCursorPosition(30, 14);
                     Console.WriteLine("5 - Глухая оборона");
                 }
-                if (healBoss <= healthBossMax * 0.3f)
+                if (healthBoss <= healthBossMax * 0.3f)
                 { 
-                    if (rageHero < 3)
+                    if (rageHero < strongBeatCost)
                     {
                         Console.SetCursorPosition(30, 17);
                         Console.ForegroundColor = ConsoleColor.DarkGray;
@@ -228,146 +233,145 @@ namespace HomeWork
                         Console.WriteLine("8 - Казнь");
                     }
                 }
-                Console.SetCursorPosition(0, i + j);
-            link1:
-                plaerInput = Convert.ToInt32(Console.ReadLine());
-                switch (plaerInput) 
+                if (stunTime == 0)
                 {
-                    case 1:
-                        damage = rand.Next(damageHero - classPlayer * 10, damageHero + classPlayer * 10) * (1 - armorBoss / 100) * powerPot;
-                        healthBoss -= damage;
-                        if(rageHero <= 10)
-                            rageHero += 2;
-                        if (rageHero > 10)
-                            rageHero = 10;
+                    Console.SetCursorPosition(55, 2);
+                    Console.ForegroundColor = ConsoleColor.DarkGray;
+                    Console.Write("@");
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
 
-                        Console.SetCursorPosition(30, 1);
-                        Console.WriteLine("Здоровье босса " + healthBoss + "    ");
-                        Console.SetCursorPosition(0, i + j++);
-                        Console.WriteLine("Вы нанесли: " + damage + " урона");
-                        break;
-                    case 2:
-                        damage = rand.Next(damageHero - classPlayer * 10, damageHero + classPlayer * 10) * 0.8f * (1 - armorBoss / 100) * powerPot;
-                        healthBoss -= damage;
-                        armorBoss -= 5;
-                        if (rageHero <= 9)
-                            rageHero++;
-
-                        Console.SetCursorPosition(30, 1);
-                        Console.WriteLine("Здоровье босса " + healthBoss + "    ");
-                        Console.SetCursorPosition(30, 3);
-                        Console.WriteLine("Броня босса    " + armorBoss + "  ");
-                        Console.SetCursorPosition(0, i + j++);
-                        Console.WriteLine("Вы нанесли: " + damage + " урона");
-                        break;
-                    case 3:
-                        if (rageHero >= 3)
-                        {
-                            damage = rand.Next(damageHero - classPlayer * 10, damageHero + classPlayer * 10) * 4 * (1 - armorBoss / 100) * powerPot;
+                while (exitCycle == true)
+                {
+                    Console.SetCursorPosition(0, roundCounter + cursorPosition);
+                    plaerInput = Convert.ToInt32(Console.ReadLine());
+                    switch (plaerInput)
+                    {
+                        case 1:
+                            damage = rand.Next(damageHero - classPlayer * 10, damageHero + classPlayer * 10) * (1 - armorBoss / 100) * powerPot;
                             healthBoss -= damage;
-                            rageHero -= 3;
+                            if (rageHero <= rageHeroMax)
+                                rageHero += 2;
+                            if (rageHero > rageHeroMax)
+                                rageHero = rageHeroMax;
+
                             Console.SetCursorPosition(30, 1);
-                            Console.WriteLine("Здоровье босса " + healthBoss + "   ");
-                            Console.SetCursorPosition(0, i + j++);
+                            Console.WriteLine("Здоровье босса " + healthBoss + "    ");
+                            Console.SetCursorPosition(0, roundCounter + cursorPosition++);
                             Console.WriteLine("Вы нанесли: " + damage + " урона");
+                            exitCycle = false;
                             break;
-                        }
-                        else
-                        {
-                            goto link1;
-                        }
-                    case 4:
-                        if (stunCooldown == 0)
-                        {
-                            stunTime = 2;
-                            stunCooldown = 5;
-                            damage = rand.Next(damageHero - classPlayer * 10, damageHero + classPlayer * 10) * 0.5f * (1 - armorBoss / 100) * powerPot;
+                        case 2:
+                            damage = rand.Next(damageHero - classPlayer * 10, damageHero + classPlayer * 10) * 0.8f * (1 - armorBoss / 100) * powerPot;
                             healthBoss -= damage;
+                            armorBoss -= 5;
+                            if (rageHero <= rageHeroMax - 1)
+                                rageHero++;
 
                             Console.SetCursorPosition(30, 1);
-                            Console.WriteLine("Здоровье босса " + healthBoss + "   ");
-                            Console.SetCursorPosition(55, 2);
-                            Console.Write("@");
-                            Console.SetCursorPosition(0, i + j++);
-                            Console.WriteLine("Вы оглушили: " + damage + " урона");
+                            Console.WriteLine("Здоровье босса " + healthBoss + "    ");
+                            Console.SetCursorPosition(30, 3);
+                            Console.WriteLine("Броня босса    " + armorBoss + "  ");
+                            Console.SetCursorPosition(0, roundCounter + cursorPosition++);
+                            Console.WriteLine("Вы нанесли: " + damage + " урона");
+                            exitCycle = false;
                             break;
-                        } 
-                        else
-                        {
-                            goto link1;
-                        }
-                    case 5:
-                        if (defCooldown == 0)
-                        {
-                            armorHero += 100 - armorHero;
-                            Console.SetCursorPosition(30, 7);
-                            Console.WriteLine("Броня героя    " + armorHero + " ");
-                            defCooldown = 4;
-                            Console.SetCursorPosition(0, i + j++);
-                        }
-                        else
-                        {
-                            goto link1;
-                        }
-                        break;
-                    case 6:
-                        if (healPot != 0)
-                        {
-                            healPot--;
-                            heal = healthHero;
-                            healthHero += healHero;
-                            if (healthHero > healthHeroMax)
+                        case 3:
+                            if (rageHero >= strongBeatCost)
                             {
-                                heal = healthHeroMax - heal;
-                                healthHero = healthHeroMax;
-                            }
-                            else
-                            {
-                                heal = healHero;
-                            }
-                            Console.SetCursorPosition(30, 5);
-                            Console.WriteLine("Здоровье героя " + healthHero + "   ");
-                            Console.SetCursorPosition(30, 15);
-                            Console.WriteLine("6 - Исцеляющее зелье " + healPot + " штуки");
-                            Console.SetCursorPosition(0, i + j++);
-                            Console.WriteLine("Лечение на: " + heal);
-                            goto link1;
-                        }
-                        goto link1;
-                    case 7:
-                        if (powerPotCount != 0)
-                        {
-                            powerPot = 4;
-                            powerPotCount--; 
-                            Console.SetCursorPosition(30, 16);
-                            Console.WriteLine("7 - Зелье усиление " + powerPotCount + " штуки");
-                            Console.SetCursorPosition(0, i + j);
-                            goto link1;
-                        }
-                        goto link1;
-                    case 8:
-                        if (healBoss <= healthBossMax * 0.3f)
-                        {
-                            if (rageHero >= 3)
-                            {
-                                damage = damageHero * 6 * (1 - armorBoss / 100) * powerPot;
+                                damage = rand.Next(damageHero - classPlayer * 10, damageHero + classPlayer * 10) * 4 * (1 - armorBoss / 100) * powerPot;
                                 healthBoss -= damage;
-                                rageHero -= 3;
+                                rageHero -= strongBeatCost;
                                 Console.SetCursorPosition(30, 1);
                                 Console.WriteLine("Здоровье босса " + healthBoss + "   ");
-                                Console.SetCursorPosition(0, i + j++);
+                                Console.SetCursorPosition(0, roundCounter + cursorPosition++);
                                 Console.WriteLine("Вы нанесли: " + damage + " урона");
+                                exitCycle = false;
+                            }
+                            break;
+                        case 4:
+                            if (stunCooldown == 0)
+                            {
+                                stunTime = 2;
+                                stunCooldown = 5;
+                                damage = rand.Next(damageHero - classPlayer * 10, damageHero + classPlayer * 10) * 0.5f * (1 - armorBoss / 100) * powerPot;
+                                healthBoss -= damage;
+
+                                Console.SetCursorPosition(30, 1);
+                                Console.WriteLine("Здоровье босса " + healthBoss + "   ");
+                                Console.SetCursorPosition(55, 2);
+                                Console.Write("@");
+                                Console.SetCursorPosition(0, roundCounter + cursorPosition++);
+                                Console.WriteLine("Вы оглушили: " + damage + " урона");
+                                exitCycle = false;
+                            }
+                            break;
+                        case 5:
+                            if (defCooldown == 0)
+                            {
+                                armorHero += 100 - armorHero;
+                                Console.SetCursorPosition(30, 7);
+                                Console.WriteLine("Броня героя    " + armorHero + " ");
+                                defCooldown = 4;
+                                Console.SetCursorPosition(0, roundCounter + cursorPosition++);
+                                exitCycle = false;
+                            }
+                            break;
+                        case 6:
+                            if (healPot != 0)
+                            {
+                                healPot--;
+                                heal = healthHero;
+                                healthHero += healHero;
+                                if (healthHero > healthHeroMax)
+                                {
+                                    heal = healthHeroMax - heal;
+                                    healthHero = healthHeroMax;
+                                }
+                                else
+                                {
+                                    heal = healHero;
+                                }
+                                Console.SetCursorPosition(30, 5);
+                                Console.WriteLine("Здоровье героя " + healthHero + "   ");
+                                Console.SetCursorPosition(30, 15);
+                                Console.WriteLine("6 - Исцеляющее зелье " + healPot + " штуки");
+                                Console.SetCursorPosition(0, roundCounter + cursorPosition++);
+                                Console.WriteLine("Лечение на: " + heal);
                                 break;
                             }
-                            else
+                            break;
+                        case 7:
+                            if (powerPotCount != 0)
                             {
-                                goto link1;
+                                powerPot = 4;
+                                powerPotCount--;
+                                Console.SetCursorPosition(30, 16);
+                                Console.WriteLine("7 - Зелье усиление " + powerPotCount + " штуки");
+                                Console.SetCursorPosition(0, roundCounter + cursorPosition);
                             }
-                        }
-                        goto link1;
-                    default:
-                        goto link1;
+                            break;
+                        case 8:
+                            if (healthBoss <= healthBossMax * 0.3f)
+                            {
+                                if (rageHero >= strongBeatCost)
+                                {
+                                    damage = damageHero * 6 * (1 - armorBoss / 100) * powerPot;
+                                    healthBoss -= damage;
+                                    rageHero -= strongBeatCost;
+                                    Console.SetCursorPosition(30, 1);
+                                    Console.WriteLine("Здоровье босса " + healthBoss + "   ");
+                                    Console.SetCursorPosition(0, roundCounter + cursorPosition++);
+                                    Console.WriteLine("Вы нанесли: " + damage + " урона");
+                                    exitCycle = false;
+                                }
+                            }
+                            break;
+                        default:
+                            break;
+                    }
                 }
+                exitCycle = true;
                 if (healthBoss <= 0)
                 {
                     Console.BackgroundColor = ConsoleColor.Green;
@@ -377,9 +381,9 @@ namespace HomeWork
                     break;
                 }
                 Console.SetCursorPosition(63, 4);
-                for (x = 1; x < 11; x++)
+                for (iteratorCycle = 1; iteratorCycle < rageHeroMax + 1; iteratorCycle++)
                 {
-                    if (x <= rageHero)
+                    if (iteratorCycle <= rageHero)
                     {
                         Console.ForegroundColor = ConsoleColor.DarkRed;
                         Console.Write("+");
@@ -392,25 +396,19 @@ namespace HomeWork
                         Console.ForegroundColor = ConsoleColor.White;
                     }
                 }
-                Console.SetCursorPosition(0, i + j);
+                Console.SetCursorPosition(0, roundCounter + cursorPosition);
 
                 if (powerPot != 1)
                     powerPot--;
                 if (stunTime == 0)
                 {
-                    Console.SetCursorPosition(55, 2);
-                    Console.ForegroundColor = ConsoleColor.DarkGray;
-                    Console.Write("@");
-                    Console.ForegroundColor = ConsoleColor.White;
-                    Console.SetCursorPosition(0, i+j);
-                    if (i%7 == 0)
+                     if (roundCounter%healBossInterval == 0)
                     {
                         heal = healthBoss;
                         healthBoss += healBoss;
                         if (healthBoss > healthBossMax)
                         {
                             heal = healthBossMax - heal;
-                            healthBoss = 0;
                             healthBoss = healthBossMax;
                             armorBoss = armorBossMax;
                         }
@@ -423,17 +421,17 @@ namespace HomeWork
                         Console.WriteLine("Здоровье босса " + healthBoss + "   ");
                         Console.SetCursorPosition(30, 3);
                         Console.WriteLine("Броня босса    " + armorBoss + "  ");
-                        Console.SetCursorPosition(0, i + j++);
+                        Console.SetCursorPosition(0, roundCounter + cursorPosition++);
                         Console.WriteLine("Лечение на: " + heal);
                     }
-                    if (rageBoss == 5)
+                    if (rageBoss == rageBossMax)
                     {
                         damage = rand.Next(damageBoss - 20, damageBoss + 20) * 7 * (1 - armorHero / 100);
                         healthHero -= damage;
                         rageBoss = -1;
                         Console.SetCursorPosition(30, 5);
                         Console.WriteLine("Здоровье героя " + healthHero + "   ");
-                        Console.SetCursorPosition(0, i + j++);
+                        Console.SetCursorPosition(0, roundCounter + cursorPosition++);
                         Console.WriteLine("Босс нанес: " + damage + " урона");
                     }
                     else
@@ -442,7 +440,7 @@ namespace HomeWork
                         healthHero -= damage;
                         Console.SetCursorPosition(30, 5);
                         Console.WriteLine("Здоровье героя " + healthHero + "   ");
-                        Console.SetCursorPosition(0, i + j++);
+                        Console.SetCursorPosition(0, roundCounter + cursorPosition++);
                         Console.WriteLine("Босс нанес: " + damage + " урона");
                     }
                     rageBoss++;
@@ -456,9 +454,9 @@ namespace HomeWork
                     break;
                 }
                 Console.SetCursorPosition(63, 0);
-                for (x = 1; x < 6; x++)
+                for (iteratorCycle = 1; iteratorCycle < rageBossMax + 1; iteratorCycle++)
                 {
-                    if (x <= rageBoss)
+                    if (iteratorCycle <= rageBoss)
                     {
                         Console.ForegroundColor = ConsoleColor.DarkRed;
                         Console.Write("+");
@@ -471,13 +469,13 @@ namespace HomeWork
                         Console.ForegroundColor = ConsoleColor.White;
                     }
                 }
-                Console.SetCursorPosition(0, i + j);
+                Console.SetCursorPosition(0, roundCounter + cursorPosition);
                 if (armorHero != armorHeroMax)
                 {
                     armorHero = armorHeroMax;
                     Console.SetCursorPosition(30, 7);
                     Console.WriteLine("Броня героя    " + armorHero + " ");
-                    Console.SetCursorPosition(0, i + j);
+                    Console.SetCursorPosition(0, roundCounter + cursorPosition);
                 }
                 if (defCooldown != 0)
                     defCooldown--;
@@ -485,7 +483,7 @@ namespace HomeWork
                     stunCooldown--;
                 if (stunTime != 0)
                     stunTime--;
-                Console.WriteLine("РАУНД " + ++i);
+                Console.WriteLine("РАУНД " + ++roundCounter);
                               
             }
         }
