@@ -1,0 +1,105 @@
+using System;
+using System.Data.SqlTypes;
+
+namespace HomeWork3
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            int moneyFirst;
+            int moneySecond = 0;
+            int moneyThird = 0;
+            int moneyChenge;
+            int curseFirst = 30;
+            int curseSecond = 15;
+            int curseThird = 2;
+            int userInput;
+            bool conditionExit = false;
+
+            Console.Write("Введите сколько у вас золотых драхм: ");
+            moneyFirst = Convert.ToInt32(Console.ReadLine());
+            while (conditionExit != true)
+            {
+                Console.Clear();
+                Console.WriteLine("У вас " + moneyFirst + " золотых драхм, " + moneySecond + " чеканных сиклей и " + moneyThird + " литые гриты");
+                Console.WriteLine("1 Если хотите обменять драхмы на сикли");
+                Console.WriteLine("2 Если хотите обменять драхмы на гриты");
+                Console.WriteLine("3 Если хотите обменять сикли на драхмы");
+                Console.WriteLine("4 Если хотите обменять сикли на гриты");
+                Console.WriteLine("5 Если хотите обменять гриты на драхмы");
+                Console.WriteLine("6 Если хотите обменять гриты на сикли");
+                Console.WriteLine("7 Для выхода");
+                userInput = Convert.ToInt32(Console.ReadLine());
+                switch (userInput)
+                {
+                    case 1:
+                        Console.WriteLine("Обмен драхм на сикли, курс 1 драхма к " + curseFirst + " сиклей");
+                        Console.Write("Сколько драх вы хотите обменять: ");
+                        moneyChenge = Convert.ToInt32(Console.ReadLine());
+                        if (moneyChenge <= moneyFirst)
+                        {
+                            moneyFirst -= moneyChenge;
+                            moneySecond += moneyChenge * curseFirst;
+                        }
+                        break;
+                    case 2:
+                        Console.WriteLine("Обмен драхм на гриты, курс 1 драхма к " + curseSecond + " гритам");
+                        Console.Write("Сколько драх вы хотите обменять: ");
+                        moneyChenge = Convert.ToInt32(Console.ReadLine());
+                        if (moneyChenge <= moneyFirst)
+                        {
+                            moneyFirst -= moneyChenge;
+                            moneyThird += moneyChenge * curseSecond;
+                        }
+                        break;
+                    case 3:
+                        Console.WriteLine("Обмен сиклеё на драхмы, курс 1 драхма к " + curseFirst + " сиклей");
+                        Console.Write("Сколько драхм вы хотите приобрести: ");
+                        moneyChenge = Convert.ToInt32(Console.ReadLine());
+                        if (moneyChenge * curseFirst <= moneySecond)
+                        {
+                            moneyFirst += moneyChenge;
+                            moneySecond -= moneyChenge * curseFirst;
+                        }
+                        break;
+                    case 4:
+                        Console.WriteLine("Обмен сиклий на гриты, курс 1 грита к " + curseThird + " сиклей");
+                        Console.Write("Сколько грит вы хотите приобрести: ");
+                        moneyChenge = Convert.ToInt32(Console.ReadLine());
+                        if (moneyChenge * curseThird <= moneySecond)
+                        {
+                            moneySecond -= moneyChenge * curseThird;
+                            moneyThird += moneyChenge;
+                        }
+                        break;
+                    case 5:
+                        Console.WriteLine("Обмен драхм на гриты, курс 1 драхма к " + curseSecond + " гритам");
+                        Console.Write("Сколько драх вы хотите приобрести: ");
+                        moneyChenge = Convert.ToInt32(Console.ReadLine());
+                        if (moneyChenge * curseSecond <= moneyThird)
+                        {
+                            moneyFirst += moneyChenge;
+                            moneyThird -= moneyChenge * curseSecond;
+                        }
+                        break;
+                    case 6:
+                        Console.WriteLine("Обмен сиклий на гриты, курс 1 грита к " + curseThird + " сиклей");
+                        Console.Write("Сколько грит вы хотите обменять: ");
+                        moneyChenge = Convert.ToInt32(Console.ReadLine());
+                        if (moneyChenge <= moneySecond)
+                        {
+                            moneySecond += moneyChenge * curseThird;
+                            moneyThird -= moneyChenge;
+                        }
+                        break;
+                    case 7:
+                        conditionExit = true;
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+    }
+}
