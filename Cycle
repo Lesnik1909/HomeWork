@@ -1,0 +1,24 @@
+using System;
+
+namespace HomeWork3
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            string userInputLine;
+            bool conditionExit = false;
+
+            while(conditionExit != true)
+            {
+                Console.WriteLine("Для выхода введите exit");
+                Console.Write("Введите что-нибудь: ");
+                userInputLine = Console.ReadLine();
+                if (userInputLine == "exit")
+                    conditionExit = true;
+                Console.Clear ();
+                Console.WriteLine("Вы ввели: " + userInputLine);
+            }
+        }
+    }
+}
