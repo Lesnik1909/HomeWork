@@ -1,0 +1,25 @@
+using System;
+
+namespace HomeWork3
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            int age;
+            string name;
+            string work;
+            string zodiak;
+            Console.Write("Как вас зовут?: ");
+            name = Console.ReadLine();
+            Console.Write("Сколько вам лет?: ");
+            age = Convert.ToInt32(Console.ReadLine());
+            Console.Write("Кем вы работаете?: ");
+            work = Console.ReadLine();
+            Console.Write("Какой у вас знак зодиака?: ");
+            zodiak = Console.ReadLine();
+
+            Console.WriteLine("Вас зовут " + name + ", вы работаете " + work + ", ваш знак зодиака " + zodiak + " и вам " + age + " лет.");
+        }
+    }
+}
