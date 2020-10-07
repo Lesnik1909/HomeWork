@@ -1,0 +1,25 @@
+using System;
+
+namespace HomeWork3
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            int count;
+            int userInputNumber;
+            string userInputLine;
+
+            Console.Write("Введите вашу строку: ");
+            userInputLine = Console.ReadLine();
+            Console.Write("Сколько раз повторить: ");
+            userInputNumber = Convert.ToInt32(Console.ReadLine());
+
+            for (count = 0; count < userInputNumber; count++)
+            {
+                Console.WriteLine(userInputLine);
+            }
+
+        }
+    }
+}
