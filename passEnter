@@ -9,8 +9,9 @@ namespace HomeWork3
             string pass = "qwerty";
             string userInput;
             int passTry;
+            int maxTry = 3;
             
-            for(passTry = 2; passTry >= 0; passTry--)
+            for(passTry = maxTry - 1; passTry >= 0; passTry--)
             {
                 Console.Write("Для доступа введите пароль: ");
                 userInput = Console.ReadLine();
