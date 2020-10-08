@@ -1,0 +1,29 @@
+using System;
+
+namespace HomeWork3
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            string pass = "qwerty";
+            string userInput;
+            int passTry;
+            
+            for(passTry = 2; passTry >= 0; passTry--)
+            {
+                Console.Write("Для доступа введите пароль: ");
+                userInput = Console.ReadLine();
+                if (userInput == pass)
+                {
+                    Console.WriteLine("Колобок повесился!");
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Пароль неверный, у вас осталось " + passTry + " попытоки");
+                }
+            }
+        }
+    }
+}
