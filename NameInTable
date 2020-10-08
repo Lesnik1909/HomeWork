@@ -1,0 +1,33 @@
+using System;
+
+namespace HomeWork3
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            string name;
+            char frameSybol;
+            int count = 1;
+            int nameLength;
+
+            Console.Write("Введите ваше имя: ");
+            name = Console.ReadLine();
+            Console.Write("Введите ваше имя: ");
+            frameSybol = Convert.ToChar(Console.ReadLine());
+            nameLength = name.Length;
+            while (count <= (nameLength + 2) * 3)
+            {
+                Console.Write(frameSybol);
+                if (count % (nameLength + 2) == 0)
+                    Console.Write("\n");
+                if (count == nameLength + 3)
+                {
+                    Console.Write(name);
+                    count += nameLength;
+                }
+                count++;
+            }
+        }
+    }
+}
