@@ -1,0 +1,20 @@
+using System;
+
+namespace HomeWork3
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            int term = 7;
+            int result = 0;
+            int maxNumber = 98;
+            
+            while (result < maxNumber)
+            {
+                result += term;
+                Console.Write(result + " ");
+            }
+        }
+    }
+}
