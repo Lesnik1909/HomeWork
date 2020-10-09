@@ -1,0 +1,106 @@
+using System;
+
+namespace HomeWork3
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            string userInput;
+            string userPass = "";
+            string userName = "Имя не введено";
+            bool conditionExit = false;
+            int passTry;
+            int maxTry = 3;
+
+            while (conditionExit != true)
+            {
+                Console.Clear();
+                Console.WriteLine("1 SetName\n" +
+                                  "2 SetPassword\n" +
+                                  "3 ChangeColor\n" +
+                                  "4 WriteName\n" +
+                                  "5 Esc");
+                userInput = Console.ReadLine();
+                switch(userInput)
+                {
+                    case "1":
+                    case "SetName":
+                        Console.Write("Введите ваше имя: ");
+                        userName = Console.ReadLine();
+                        break;
+                    case "2":
+                    case "SetPassword":
+                        Console.Write("Установите ваш пароль: ");
+                        userPass = Console.ReadLine();
+                        break;
+                    case "3":
+                    case "ChangeColor":
+                        Console.WriteLine("Выберите цвет консоли:\n" +
+                            "1 Red\n" +
+                            "2 Blue\n" +
+                            "3 Green\n" +
+                            "4 Black\n" +
+                            "5 Yellow");
+                        userInput = Console.ReadLine();
+                        switch(userInput)
+                        {
+                            case "1":
+                            case "Red":
+                                Console.BackgroundColor = ConsoleColor.Red;
+                                Console.Clear();
+                                break;
+                            case "2":
+                            case "Blue":
+                                Console.BackgroundColor = ConsoleColor.Blue;
+                                Console.Clear();
+                                break;
+                            case "3":
+                            case "Green":
+                                Console.BackgroundColor = ConsoleColor.Green;
+                                Console.Clear();
+                                break;
+                            case "4":
+                            case "Black":
+                                Console.BackgroundColor = ConsoleColor.Black;
+                                Console.Clear();
+                                break;
+                            case "5":
+                            case "Yellow":
+                                Console.BackgroundColor = ConsoleColor.Yellow;
+                                Console.Clear();
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
+                    case "4":
+                    case "WriteName":
+                        for (passTry = maxTry - 1; passTry >= 0; passTry--)
+                        {
+                            Console.Write("Для доступа введите пароль: ");
+                            userInput = Console.ReadLine();
+                            if (userInput == userPass)
+                            {
+                                Console.WriteLine(userName);
+                                Console.ReadKey();
+                                break;
+                            }
+                            else
+                            {
+                                Console.WriteLine("Пароль неверный, у вас осталось " + passTry + " попытоки");
+                            }
+                        }
+                        break;
+                    case "5":
+                    case "Esc":
+                        conditionExit = true;
+                        break;
+                    default:
+                        break;
+                }
+                
+            }
+        }
+    }
+}
