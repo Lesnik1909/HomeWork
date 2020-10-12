@@ -1,0 +1,40 @@
+using System;
+
+namespace MyHomeWork
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            int[,] array = new int[5,7];
+            Random rand = new Random();
+            int product = 1;
+            int summ = 0;
+            int row  = 2;
+            int column = 1;
+
+            Console.WriteLine("Матрица:");
+            for (int i = 0; i < array.GetLength(0); i++)
+            {
+                for (int j = 0; j < array.GetLength(1); j++)
+                {
+                    array[i, j] = rand.Next(0, 100);
+                    if (array[i, j] < 10)
+                        Console.Write(" ");
+                    Console.Write(array[i, j] + " ");
+                }
+                Console.WriteLine();
+            }
+            for(int i = 0; i < array.GetLength(1); i++)
+            {
+                summ += array[row - 1, i];
+            }
+            Console.WriteLine("Сумма " + row + " строки равна " + summ);
+            for (int i = 0; i < array.GetLength(0); i++)
+            {
+                product *= array[i, column - 1];
+            }
+            Console.WriteLine("Произведение " + column + " Столбца равно " + product);
+        }
+    }
+}
