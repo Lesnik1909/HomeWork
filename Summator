@@ -1,0 +1,47 @@
+using System;
+
+namespace MyHomeWork
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            int[] array = new int[0];
+            int count;
+            int sum = 0;
+            string userInput;
+            bool isTrue = true;
+            bool myConvert;
+
+            Console.WriteLine("Добавляйте числа в массив. Команда sum - покажет сумму добавленых элементов, а команда exit - выход");
+            while(isTrue)
+            {
+                userInput = Console.ReadLine();
+                if (userInput == "exit")
+                {
+                    isTrue = false;
+                    break;
+                }
+                else if (userInput == "sum")
+                {
+                    Console.WriteLine("Сумма равна " + sum);
+                }
+                else
+                {
+                    myConvert = int.TryParse(userInput, out count);
+                    if (myConvert)
+                    {
+                        int[] tempArray = new int[array.Length + 1];
+                        for (int i = 0; i < array.Length; i++)
+                        {
+                            tempArray[i] = array[i];
+                        }
+                        tempArray[tempArray.Length - 1] = count;
+                        array = tempArray;
+                        sum += count;
+                    }
+                }
+            }
+        }
+    }
+}
