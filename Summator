@@ -7,7 +7,7 @@ namespace MyHomeWork
         static void Main(string[] args)
         {
             int[] array = new int[0];
-            int count;
+            int numberEnter;
             int sum = 0;
             string userInput;
             bool isTrue = true;
@@ -20,7 +20,6 @@ namespace MyHomeWork
                 if (userInput == "exit")
                 {
                     isTrue = false;
-                    break;
                 }
                 else if (userInput == "sum")
                 {
@@ -28,7 +27,7 @@ namespace MyHomeWork
                 }
                 else
                 {
-                    myConvert = int.TryParse(userInput, out count);
+                    myConvert = int.TryParse(userInput, out numberEnter);
                     if (myConvert)
                     {
                         int[] tempArray = new int[array.Length + 1];
@@ -36,9 +35,9 @@ namespace MyHomeWork
                         {
                             tempArray[i] = array[i];
                         }
-                        tempArray[tempArray.Length - 1] = count;
+                        tempArray[tempArray.Length - 1] = numberEnter;
                         array = tempArray;
-                        sum += count;
+                        sum += numberEnter;
                     }
                 }
             }
