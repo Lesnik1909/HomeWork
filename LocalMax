@@ -18,14 +18,14 @@ namespace MyHomeWork
                 Console.Write(array[i] + " ");
             }
             Console.WriteLine("\n\nЛокальные максимумы:");
-            if (array[first] > array[first + 1])
+            if (array[first] >= array[first + 1])
                 Console.Write(array[first] + " ");
             for (int i = first + 1; i < last - 1; i++)
             {
-                if (array[i] > array[i - 1] && array[i] > array[i + 1])
+                if (array[i] >= array[i - 1] && array[i] >= array[i + 1])
                     Console.Write(array[i] + " ");
             }
-            if (array[last] > array[last - 1])
+            if (array[last] >= array[last - 1])
                 Console.WriteLine(array[last]);
         }
     }
