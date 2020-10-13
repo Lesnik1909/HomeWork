@@ -10,8 +10,8 @@ namespace MyHomeWork
             Random rand = new Random();
             int product = 1;
             int summ = 0;
-            int row  = 2;
-            int column = 1;
+            int row = 1;
+            int column = 0;
 
             Console.WriteLine("Матрица:");
             for (int i = 0; i < array.GetLength(0); i++)
@@ -27,14 +27,14 @@ namespace MyHomeWork
             }
             for(int i = 0; i < array.GetLength(1); i++)
             {
-                summ += array[row - 1, i];
+                summ += array[row , i];
             }
-            Console.WriteLine("Сумма " + row + " строки равна " + summ);
+            Console.WriteLine("Сумма " + (row + 1) + " строки равна " + summ);
             for (int i = 0; i < array.GetLength(0); i++)
             {
-                product *= array[i, column - 1];
+                product *= array[i, column];
             }
-            Console.WriteLine("Произведение " + column + " Столбца равно " + product);
+            Console.WriteLine("Произведение " + (column + 1) + " Столбца равно " + product);
         }
     }
 }
