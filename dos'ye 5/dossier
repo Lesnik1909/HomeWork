@@ -1,0 +1,94 @@
+using System;
+
+namespace MyHomeWork
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            bool isWork = true;
+            string[,] name = { {"Petrov","Ivan","Sergeevich" } };
+            string[] post = {"Slesar" };
+
+            while(isWork)
+            {
+                Console.WriteLine("1 - Добавить досье.\n2 - Вывести досье.\n3 - Удалите досье.\n4 - Поиск по фамилии\n5 - Выход\n");
+               
+                switch (UserInput())
+                {
+                    case 1:
+                        PostAdd(name, post);
+                        break;
+                    case 2:
+                        PostWrite(name, post);
+                        break;
+                    case 3:
+                        PostRem(name, post);
+                        break;
+                    case 4:
+                        FindName(name);
+                        break;
+                    case 5:
+                        isWork = false;
+                        break;
+                    default:
+                        break;
+
+                }
+                Console.Clear();
+            }
+            
+        }
+
+        static void PostWrite(string[,] name, string[] post)
+        {
+            for(int i = 0; i < name.GetLength(0); i++)
+            {
+                Console.Write((i+1) + "- ");
+                for (int j = 0; j < name.GetLength(1); j++)
+                {
+                    Console.Write(name[i, j] + " ");
+                }
+                Console.WriteLine("должность - " + post[i]);
+            }
+            Console.ReadKey();
+        }
+        static void PostAdd(string[,] name, string[] post)
+        {
+            string[,] tempName = new string[name.GetLength(0) + 1, name.GetLength(1)];
+            string[] tempPost = new string[post.Length + 1];
+            for (int i = 0; i < name.GetLength(0); i++)
+            {
+                for (int j = 0; j < name.GetLength(1); j++)
+                {
+                    tempName[i, j] = name[i, j];
+                }
+                tempPost[i] = post[i];
+            }
+            Console.Write("Введите Фамилию: ");
+            tempName[tempName.GetLength(0) - 1, 0] = Console.ReadLine();
+            Console.Write("Введите Имя: ");
+            tempName[tempName.GetLength(0) - 1, 1] = Console.ReadLine();
+            Console.WriteLine("Введите Отчество: ");
+            tempName[tempName.GetLength(0) - 1, 2] = Console.ReadLine();
+            Console.WriteLine("Введите Должность: ");
+            tempPost[tempPost.Length - 1] = Console.ReadLine();
+            name = tempName;
+            post = tempPost;
+        }
+        static void PostRem(string[,] name, string[] post)
+        {
+
+        }
+        static int FindName(string[,] name)
+        {
+            return 0;
+        }
+        static int UserInput()
+        {
+            int userNumber;
+            int.TryParse(Console.ReadLine(), out userNumber);
+            return userNumber;
+        }
+    }
+}
