@@ -7,8 +7,8 @@ namespace MyHomeWork
         static void Main(string[] args)
         {
             bool isWork = true;
-            string[,] name = { {"Petrov","Ivan","Sergeevich" } };
-            string[] post = {"Slesar" };
+            string[,] name = { {"Petrov","Ivan","Sergeevich" }, { "Koreshkov", "Alexey", "Sergeevich" }, { "Grabov", "Petr", "Sergeevich" }, { "Grabov", "Andrey", "Sergeevich" } };
+            string[] post = {"Slesar", "Slesar", "Slesar", "Slesar" };
 
             while(isWork)
             {
@@ -17,13 +17,13 @@ namespace MyHomeWork
                 switch (UserInput())
                 {
                     case 1:
-                        PostAdd(name, post);
+                        PostAdd(ref name,  ref post);
                         break;
                     case 2:
                         PostWrite(name, post);
                         break;
                     case 3:
-                        PostRem(name, post);
+                        PostRem(ref name, ref post);
                         break;
                     case 4:
                         FindName(name);
@@ -39,7 +39,6 @@ namespace MyHomeWork
             }
             
         }
-
         static void PostWrite(string[,] name, string[] post)
         {
             for(int i = 0; i < name.GetLength(0); i++)
@@ -53,7 +52,7 @@ namespace MyHomeWork
             }
             Console.ReadKey();
         }
-        static void PostAdd(string[,] name, string[] post)
+        static void PostAdd(ref string[,] name, ref string[] post)
         {
             string[,] tempName = new string[name.GetLength(0) + 1, name.GetLength(1)];
             string[] tempPost = new string[post.Length + 1];
@@ -69,20 +68,72 @@ namespace MyHomeWork
             tempName[tempName.GetLength(0) - 1, 0] = Console.ReadLine();
             Console.Write("Введите Имя: ");
             tempName[tempName.GetLength(0) - 1, 1] = Console.ReadLine();
-            Console.WriteLine("Введите Отчество: ");
+            Console.Write("Введите Отчество: ");
             tempName[tempName.GetLength(0) - 1, 2] = Console.ReadLine();
-            Console.WriteLine("Введите Должность: ");
+            Console.Write("Введите Должность: ");
             tempPost[tempPost.Length - 1] = Console.ReadLine();
             name = tempName;
             post = tempPost;
         }
-        static void PostRem(string[,] name, string[] post)
+        static void PostRem(ref string[,] name, ref string[] post)
         {
-
+            int indexRem;
+            bool convertLuck;
+            Console.Write("Введите индекс удаляемого досье: ");
+            convertLuck = int.TryParse(Console.ReadLine(), out indexRem);
+            if (convertLuck)
+            {
+                if (indexRem > 0 && indexRem <= name.GetLength(0))
+                {
+                    indexRem--;
+                    string[,] tempName = new string[name.GetLength(0) - 1, name.GetLength(1)];
+                    string[] tempPost = new string[post.Length - 1];
+                    for (int i = 0; i < name.GetLength(0); i++)
+                    {
+                        if (i < indexRem)
+                        {
+                            for (int j = 0; j < name.GetLength(1); j++)
+                            {
+                                tempName[i, j] = name[i, j];
+                            }
+                            tempPost[i] = post[i];
+                        } 
+                        else if (i > indexRem)
+                        {
+                            for (int j = 0; j < name.GetLength(1); j++)
+                            {
+                                tempName[i - 1, j] = name[i, j];
+                            }
+                            tempPost[i - 1] = post[i];
+                        }
+                    }
+                    name = tempName;
+                    post = tempPost;
+                }
+            }
         }
-        static int FindName(string[,] name)
+        static void FindName(string[,] name)
         {
-            return 0;
+            string findName;
+            bool findLuck = false;
+            Console.Write("Введите фамилию: ");
+            findName = Console.ReadLine();
+            for (int i = 0; i < name.GetLength(0); i++)
+            {
+                if (findName.ToLower() == name[i, 0].ToLower())
+                {
+                    Console.Write((i + 1) + " ");
+                    for (int j = 0; j < name.GetLength(1); j++)
+                    {
+                        Console.Write(name[i, j] + " ");
+                    }
+                    findLuck = true;
+                    Console.WriteLine();
+                }
+            }
+            if (!findLuck)
+                Console.WriteLine("Такого досье нет");
+            Console.ReadKey();
         }
         static int UserInput()
         {
