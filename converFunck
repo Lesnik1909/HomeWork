@@ -1,0 +1,28 @@
+using System;
+
+namespace MyHomeWork
+{
+    class Program
+    {
+        static int ConverNumber()
+        {
+            int userNumber = 0;
+            bool convertLuck = false;
+
+            while(!convertLuck)
+            {
+                Console.Write("Введите число: ");
+                convertLuck = int.TryParse(Console.ReadLine(), out userNumber);
+                Console.Clear();
+            }
+
+            return userNumber;
+        }
+
+        static void Main(string[] args)
+        {
+            int number = ConverNumber();
+            Console.WriteLine("Ваше число: " + number);
+        }
+    }
+}
