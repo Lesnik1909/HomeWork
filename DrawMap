@@ -4,7 +4,7 @@ namespace test
 {
     class Program
     {
-        static int ConvertToNumber(int[] binary)
+         static int ConvertToNumber(int[] binary)
         {
             int result = 0;
             for (int i = 0; i < binary.Length; i++)
@@ -15,7 +15,7 @@ namespace test
         }
         static void DrawMap(char[,] map)
         {
-            int[,] graficMap = new int[map.GetLength(0), map.GetLength(1)];
+            char[,] graficMap = new char[map.GetLength(0), map.GetLength(1)];
             int[] binary = new int[4];
 
             for (int i = 0; i < map.GetLength(0); i++)
@@ -64,10 +64,52 @@ namespace test
                         }
                         else
                             binary[3] = 0;
-                        graficMap[i, j] = ConvertToNumber(binary);
+
+                        switch (ConvertToNumber(binary))
+                        {
+                            case 1:
+                            case 4:
+                            case 5:
+                                graficMap[i, j] = '\u2550';
+                                break;
+                            case 2:
+                            case 8:
+                            case 10:
+                                graficMap[i, j] = '\u2551';
+                                break;
+                            case 3:
+                                graficMap[i, j] = '\u255D';
+                                break;
+                            case 6:
+                                graficMap[i, j] = '\u255A';
+                                break;
+                            case 7:
+                                graficMap[i, j] = '\u2569';
+                                break;
+                            case 9:
+                                graficMap[i, j] = '\u2557';
+                                break;
+                            case 11:
+                                graficMap[i, j] = '\u2563';
+                                break;
+                            case 12:
+                                graficMap[i, j] = '\u2554';
+                                break;
+                            case 13:
+                                graficMap[i, j] = '\u2566';
+                                break;
+                            case 14:
+                                graficMap[i, j] = '\u2560';
+                                break;
+                            case 15:
+                                graficMap[i, j] = '\u256C';
+                                break;
+                        }
                     }
-                    //else
-                    //    graficMap[i, j] = map[i, j];
+                    else if (map[i, j] == '@')
+                        graficMap[i, j] = '\u0002';
+                    else
+                        graficMap[i, j] = map[i, j];
                 }
             }
 
@@ -75,7 +117,7 @@ namespace test
             {
                 for (int j = 0; j < graficMap.GetLength(1); j++)
                 {
-                    Console.Write(graficMap[i, j] + " ");
+                    Console.Write(graficMap[i, j]);
                 }
                 Console.WriteLine();
             }
