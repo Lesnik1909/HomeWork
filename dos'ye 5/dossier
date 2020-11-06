@@ -2,12 +2,10 @@ using System;
 
 namespace HomeWork
 {
-    class Program
-    {
-        static void Main(string[] args)
+    static void Main(string[] args)
         {
             bool isWork = true;
-            string[] name = {"Petrov Ivan Sergeevich", "Koreshkov Alexey Sergeevich", "Grabov Petr Sergeevich", "Grabov Andrey Sergeevich"};
+            string[] name = { "Petrov Ivan Sergeevich", "Koreshkov Alexey Sergeevich", "Grabov Petr Sergeevich", "Grabov Andrey Sergeevich" };
             string[] post = { "Slesar", "Slesar", "Slesar", "Slesar" };
 
             while (isWork)
@@ -16,13 +14,17 @@ namespace HomeWork
                 switch (UserInput())
                 {
                     case 1:
-                        PostAdd(ref name, ref post);
+                        PostAdd(ref name, 1);
+                        PostAdd(ref post, 2);
                         break;
                     case 2:
                         PostWrite(name, post);
                         break;
                     case 3:
-                        PostRem(ref name, ref post);
+                        Console.Write("Введите индекс удаляемого досье: ");
+                        int indexRem = UserInput();
+                        PostRem(ref name, indexRem);
+                        PostRem(ref post, indexRem);
                         break;
                     case 4:
                         FindName(name);
@@ -46,52 +48,49 @@ namespace HomeWork
             }
             Console.ReadKey();
         }
-        static void PostAdd(ref string[] name, ref string[] post)
+        static void PostAdd(ref string[] array, int nameOrPost)
         {
-            string[] tempName = new string[name.Length + 1];
-            string[] tempPost = new string[post.Length + 1];
-            for (int i = 0; i < name.Length; i++)
+            string[] tempArray = new string[array.Length + 1];
+            for (int i = 0; i < array.Length; i++)
             {
-                tempName[i] = name[i];
-                tempPost[i] = post[i];
+                tempArray[i] = array[i];
             }
-            Console.Write("Введите Фамилию: ");
-            tempName[^1] += (Console.ReadLine() + " ");
-            Console.Write("Введите Имя: ");
-            tempName[^1] += (Console.ReadLine() + " ");
-            Console.Write("Введите Отчество: ");
-            tempName[^1] += Console.ReadLine();
-            Console.Write("Введите Должность: ");
-            tempPost[tempPost.Length - 1] = Console.ReadLine();
-            name = tempName;
-            post = tempPost;
+            if (nameOrPost == 1)
+            {
+                Console.Write("Введите Фамилию: ");
+                tempArray[tempArray.Length - 1] += (Console.ReadLine() + " ");
+                Console.Write("Введите Имя: ");
+                tempArray[tempArray.Length - 1] += (Console.ReadLine() + " ");
+                Console.Write("Введите Отчество: ");
+                tempArray[tempArray.Length - 1] += Console.ReadLine();
+            } 
+            else
+            {
+                Console.Write("Введите Должность: ");
+                tempArray[tempArray.Length - 1] += Console.ReadLine();
+            }  
+            array = tempArray;
         }
-        static void PostRem(ref string[] name, ref string[] post)
+        static void PostRem(ref string[] array, int indexRem)
         {
-            Console.Write("Введите индекс удаляемого досье: ");
-            int indexRem = UserInput();
             if (indexRem != 0)
             {
-                if (indexRem > 0 && indexRem <= name.Length)
+                if (indexRem > 0 && indexRem <= array.Length)
                 {
                     indexRem--;
-                    string[] tempName = new string[name.Length - 1];
-                    string[] tempPost = new string[post.Length - 1];
-                    for (int i = 0; i < name.GetLength(0); i++)
+                    string[] tempArray = new string[array.Length - 1];
+                    for (int i = 0; i < array.GetLength(0); i++)
                     {
                         if (i < indexRem)
                         {
-                            tempName[i] = name[i];
-                            tempPost[i] = post[i];
+                            tempArray[i] = array[i];
                         }
                         else if (i > indexRem)
                         {
-                            tempName[i - 1] = name[i];
-                            tempPost[i - 1] = post[i];
+                            tempArray[i - 1] = array[i];
                         }
                     }
-                    name = tempName;
-                    post = tempPost;
+                    array = tempArray;
                 }
             }
         }
