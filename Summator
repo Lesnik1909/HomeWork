@@ -10,16 +10,16 @@ namespace MyHomeWork
             int numberEnter;
             int sum = 0;
             string userInput;
-            bool cycleСondition = true;
+            bool programRunning = true;
             bool myConvert;
 
             Console.WriteLine("Добавляйте числа в массив. Команда sum - покажет сумму добавленых элементов, а команда exit - выход");
-            while(cycleСondition)
+            while(programRunning)
             {
                 userInput = Console.ReadLine();
                 if (userInput == "exit")
                 {
-                    cycleСondition = false;
+                    programRunning = false;
                 }
                 else if (userInput == "sum")
                 {
