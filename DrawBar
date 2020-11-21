@@ -4,10 +4,10 @@ namespace MyHomeWork
 {
     class Program
     {
-        static void DrawBar(int value, int maxValue, ConsoleColor color, int position)
+        static void DrawBar(int currentValue, int maxValue, ConsoleColor color, int position)
         {
             int persent;
-            persent = value * 100 / maxValue;
+            persent = currentValue * 100 / maxValue;
             ConsoleColor defaultColor = Console.BackgroundColor;
             string bar = "";
             if ((persent % 10) < 5)
