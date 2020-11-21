@@ -1,0 +1,61 @@
+using System;
+using System.Collections.Generic;
+
+namespace PersonnelAccounting
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Dictionary<string, string> file = new Dictionary<string, string>{
+                {"Петров Петр Петрович", "Физик"},
+                {"Иванов Иван Иванович", "Слесарь"},
+                {"Алексеев Алексей Алексеевич", "Строитель"},
+                {"Александрова Александра Александровна", "Бухгалтер"}
+            };
+            string name, job;
+            bool cycleRunning = true;
+            while (cycleRunning)
+            {
+                Console.Clear();
+                Console.WriteLine("1 - Добавление нового досье");
+                Console.WriteLine("2 - Просмотр всех досье");
+                Console.WriteLine("3 - Удаление досье");
+                Console.WriteLine("4 - Выходи из программы");
+                int.TryParse(Console.ReadLine(), out int userInput);
+                switch (userInput)
+                {
+                    case 1:
+                        Console.WriteLine("Введите Фамилию Имя Отчество");
+                        name = Console.ReadLine();
+                        Console.WriteLine("Введите должность");
+                        job = Console.ReadLine();
+                        file.Add(name, job);
+                        break;
+                    case 2:
+                        int i = 1;
+                        foreach (var item in file)
+                        {
+                            Console.WriteLine($"{i} {item.Key} - {item.Value}");
+                            i++;
+                        }
+                        Console.ReadKey();
+                        break;
+                    case 3:
+                        Console.WriteLine("Введите Фамилию Имя Отчество удаляемого досье");
+                        name = Console.ReadLine();
+                        if (file.ContainsKey(name))
+                            file.Remove(name);
+                        else
+                            Console.WriteLine("Досье с такими данными оотсутствует");
+                        break;
+                    case 4:
+                        cycleRunning = false;
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+    }
+}
