@@ -8,24 +8,24 @@ namespace Dictionary
         static void Main(string[] args)
         {
             string userInput;
-            Dictionary<string, string> countries = new Dictionary<string, string>
+            Dictionary<string, string> myDictionary = new Dictionary<string, string>
             {
-                {"Франция", "Париж"},
-                {"Германия", "Берлин"},
-                {"Великобритания", "Лондон"},
-                {"Россия", "Москва"}
+                {"жизнь", "Физиологическое состояние живого организма (человека, животного, растения) от зарождения, роста, развития и до разрушения (противоп.: смерть)."},
+                {"смерть", "Прекращение существования человека, животного."},
+                {"радость", "Чувство удовольствия, ощущение большого душевного удовлетворения."},
+                {"горе", "Глубокая печаль, скорбь, глубокое душевное страдание."}
             };
 
             while(true)
             {
-                Console.Write("Введите Esc для выхода\nВведите название страны: ");
+                Console.Write("Введите Esc для выхода\nВведите интересующее вас слово: ");
                 userInput = Console.ReadLine();
                 if (userInput == "Esc")
                     break;
-                else if (countries.ContainsKey(userInput))
-                    Console.Write(countries[userInput]);
+                else if (myDictionary.ContainsKey(userInput))
+                    Console.Write(myDictionary[userInput]);
                 else
-                    Console.WriteLine("Такой страны в словаре нет");
+                    Console.WriteLine("Такого слова в моём словаре нет");
                 Console.ReadKey();
                 Console.Clear();
             }
