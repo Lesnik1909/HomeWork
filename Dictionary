@@ -1,0 +1,34 @@
+using System;
+using System.Collections.Generic;
+
+namespace Dictionary
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            string userInput;
+            Dictionary<string, string> countries = new Dictionary<string, string>
+            {
+                {"Франция", "Париж"},
+                {"Германия", "Берлин"},
+                {"Великобритания", "Лондон"},
+                {"Россия", "Москва"}
+            };
+
+            while(true)
+            {
+                Console.Write("Введите Esc для выхода\nВведите название страны: ");
+                userInput = Console.ReadLine();
+                if (userInput == "Esc")
+                    break;
+                else if (countries.ContainsKey(userInput))
+                    Console.Write(countries[userInput]);
+                else
+                    Console.WriteLine("Такой страны в словаре нет");
+                Console.ReadKey();
+                Console.Clear();
+            }
+        }
+    }
+}
