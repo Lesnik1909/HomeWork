@@ -4,7 +4,7 @@ namespace HomeWork1
 {
     class Program
     {
-        static void RandArray(ref int[,] array)
+        static void RandArray(int[,] array)
         {
             Random rand = new Random();
             for (int i = 0; i < array.GetLength(0); i++)
@@ -28,12 +28,12 @@ namespace HomeWork1
                 Console.WriteLine();
             }
         }
-        static void ShuffleArray (ref int[,] array)
+        static void ShuffleArray (int[,] array)
         {
             Random rand = new Random();
-            int programRunning = 0;
+            int numberOfIterations = 100;
             int tempValue;
-            while (programRunning < 100)
+            while (numberOfIterations > 0)
             {
                 int i = rand.Next(0, array.GetLength(0));
                 int iNew = rand.Next(0, array.GetLength(0));
@@ -42,16 +42,16 @@ namespace HomeWork1
                 tempValue = array[iNew, jNew];
                 array[iNew, jNew] = array[i, j];
                 array[i, j] = tempValue;
-                programRunning++;
+                numberOfIterations--;
             }
         }
         static void Main(string[] args)
         {
             int[,] array = new int[5, 5];
-            RandArray(ref array);
+            RandArray(array);
             DrawArray(array);
             Console.WriteLine();
-            ShuffleArray(ref array);
+            ShuffleArray(array);
             DrawArray(array);
         }
     }
