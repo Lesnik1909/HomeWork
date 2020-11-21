@@ -4,7 +4,7 @@ namespace MyHomeWork
 {
     class Program
     {
-        static int EnterNumber()
+        static int ReadAndConvertToNumber()
         {
             int userNumber = 0;
             bool convertLuck = false;
@@ -21,7 +21,7 @@ namespace MyHomeWork
 
         static void Main(string[] args)
         {
-            int number = EnterNumber();
+            int number = ReadAndConvertToNumber();
             Console.WriteLine("Ваше число: " + number);
         }
     }
