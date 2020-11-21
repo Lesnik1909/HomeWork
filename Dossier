@@ -1,0 +1,114 @@
+using System;
+
+namespace HomeWork
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            bool isWork = true;
+            string[] name = { "Petrov Ivan Sergeevich", "Koreshkov Alexey Sergeevich", "Grabov Petr Sergeevich", "Grabov Andrey Sergeevich" };
+            string[] post = { "Slesar", "Slesar", "Slesar", "Slesar" };
+
+            while (isWork)
+            {
+                Console.WriteLine("1 - Добавить досье.\n2 - Вывести досье.\n3 - Удалите досье.\n4 - Поиск по фамилии\n5 - Выход\n");
+                switch (UserInput())
+                {
+                    case 1:
+                        AdditionPost(ref name, "Фамилию Имя Отчество");
+                        AdditionPost(ref post, "Должность");
+                        break;
+                    case 2:
+                        WritePost(name, post);
+                        break;
+                    case 3:
+                        Console.Write("Введите индекс удаляемого досье: ");
+                        int indexRem = UserInput();
+                        RemovePost(ref name, indexRem);
+                        RemovePost(ref post, indexRem);
+                        break;
+                    case 4:
+                        FindName(name);
+                        break;
+                    case 5:
+                        isWork = false;
+                        break;
+                    default:
+                        break;
+                }
+                Console.Clear();
+            }
+        }
+        static void WritePost(string[] name, string[] post)
+        {
+            for (int i = 0; i < name.Length; i++)
+            {
+                Console.Write((i + 1) + "- ");
+                Console.Write(name[i]);
+                Console.WriteLine(" должность - " + post[i]);
+            }
+            Console.ReadKey();
+        }
+        static void AdditionPost(ref string[] array, string nameOrPost)
+        {
+            string[] tempArray = new string[array.Length + 1];
+            for (int i = 0; i < array.Length; i++)
+            {
+                tempArray[i] = array[i];
+            }
+            Console.WriteLine($"Введите {nameOrPost}: ");
+            tempArray[tempArray.Length - 1] = Console.ReadLine();
+            array = tempArray;
+        }
+        static void RemovePost(ref string[] array, int indexRem)
+        {
+            if (indexRem != 0)
+            {
+                if (indexRem > 0 && indexRem <= array.Length)
+                {
+                    indexRem--;
+                    string[] tempArray = new string[array.Length - 1];
+                    for (int i = 0; i < array.GetLength(0); i++)
+                    {
+                        if (i < indexRem)
+                        {
+                            tempArray[i] = array[i];
+                        }
+                        else if (i > indexRem)
+                        {
+                            tempArray[i - 1] = array[i];
+                        }
+                    }
+                    array = tempArray;
+                }
+            }
+        }
+        static void FindName(string[] name)
+        {
+            string findName;
+            bool findLuck = false;
+            Console.Write("Введите фамилию: ");
+            findName = Console.ReadLine();
+            for (int i = 0; i < name.Length; i++)
+            {
+                string[] wors = name[i].Split(' ');
+                if (findName.ToLower() == wors[0].ToLower())
+                {
+                    Console.Write((i + 1) + " ");
+                    Console.Write(name[i]);
+                    findLuck = true;
+                    Console.WriteLine();
+                }
+            }
+            if (!findLuck)
+                Console.WriteLine("Такого досье нет");
+            Console.ReadKey();
+        }
+        static int UserInput()
+        {
+            int.TryParse(Console.ReadLine(), out int userNumber);
+            return userNumber;
+        }
+    }
+}
