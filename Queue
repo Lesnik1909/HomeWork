@@ -1,0 +1,32 @@
+using System;
+using System.Collections.Generic;
+
+namespace Queue
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Queue<int> queueInTheShop = new Queue<int>(0);
+            Random rand = new Random();
+            int numberOfClients = 10;
+            int shopCount = 0;
+
+            for (int i = 0; i < numberOfClients; i++)
+            {
+                queueInTheShop.Enqueue(rand.Next(5, 200));
+            }
+            for (int i = 0; i < numberOfClients + 1; i++)
+            {
+                Console.Clear();
+                Console.WriteLine("Магазин заработал " + shopCount);
+                if (queueInTheShop.Count != 0)
+                {
+                    Console.WriteLine("Клиент купил на " + queueInTheShop.Peek());
+                    shopCount += queueInTheShop.Dequeue();
+                }
+                Console.ReadKey();
+            }
+        }
+    }
+}
