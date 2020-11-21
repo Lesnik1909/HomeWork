@@ -20,10 +20,10 @@ namespace List
             while(true)
             {
                 Console.Clear();
-                Console.WriteLine("Команда esc для выхода из программы\nКоманда sum выводит сумму всех введенных чисел");
+                Console.WriteLine("Команда exit для выхода из программы\nКоманда sum выводит сумму всех введенных чисел");
                 Console.Write("Введите число: ");
                 userInput = Console.ReadLine();
-                if (userInput == "esc")
+                if (userInput == "exit")
                     break;
                 else if (userInput == "sum")
                 {
