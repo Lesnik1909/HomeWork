@@ -16,15 +16,12 @@ namespace Queue
             {
                 queueInTheShop.Enqueue(rand.Next(5, 200));
             }
-            for (int i = 0; i < numberOfClients + 1; i++)
+            while(queueInTheShop.Count != 0)
             {
                 Console.Clear();
                 Console.WriteLine("Магазин заработал " + shopCount);
-                if (queueInTheShop.Count != 0)
-                {
-                    Console.WriteLine("Клиент купил на " + queueInTheShop.Peek());
-                    shopCount += queueInTheShop.Dequeue();
-                }
+                Console.WriteLine("Клиент купил на " + queueInTheShop.Peek());
+                shopCount += queueInTheShop.Dequeue();
                 Console.ReadKey();
             }
         }
