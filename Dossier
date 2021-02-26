@@ -7,8 +7,8 @@ namespace HomeWork
         static void Main(string[] args)
         {
             bool isWork = true;
-            string[] name = { "Petrov Ivan Sergeevich", "Koreshkov Alexey Sergeevich", "Grabov Petr Sergeevich", "Grabov Andrey Sergeevich" };
-            string[] post = { "Slesar", "Slesar", "Slesar", "Slesar" };
+            string[] names = { "Petrov Ivan Sergeevich", "Koreshkov Alexey Sergeevich", "Grabov Petr Sergeevich", "Grabov Andrey Sergeevich" };
+            string[] posts = { "Slesar", "Slesar", "Slesar", "Slesar" };
 
             while (isWork)
             {
@@ -16,20 +16,20 @@ namespace HomeWork
                 switch (UserInput())
                 {
                     case 1:
-                        AdditionPost(ref name, "Фамилию Имя Отчество");
-                        AdditionPost(ref post, "Должность");
+                        AddPost(ref names, "Фамилию Имя Отчество");
+                        AddPost(ref posts, "Должность");
                         break;
                     case 2:
-                        WritePost(name, post);
+                        WritePost(names, posts);
                         break;
                     case 3:
                         Console.Write("Введите индекс удаляемого досье: ");
                         int indexRem = UserInput();
-                        RemovePost(ref name, indexRem);
-                        RemovePost(ref post, indexRem);
+                        RemovePost(ref names, indexRem);
+                        RemovePost(ref posts, indexRem);
                         break;
                     case 4:
-                        FindName(name);
+                        FindName(names);
                         break;
                     case 5:
                         isWork = false;
@@ -40,17 +40,17 @@ namespace HomeWork
                 Console.Clear();
             }
         }
-        static void WritePost(string[] name, string[] post)
+        static void WritePost(string[] names, string[] posts)
         {
-            for (int i = 0; i < name.Length; i++)
+            for (int i = 0; i < names.Length; i++)
             {
                 Console.Write((i + 1) + "- ");
-                Console.Write(name[i]);
-                Console.WriteLine(" должность - " + post[i]);
+                Console.Write(names[i]);
+                Console.WriteLine(" должность - " + posts[i]);
             }
             Console.ReadKey();
         }
-        static void AdditionPost(ref string[] array, string nameOrPost)
+        static void AddPost(ref string[] array, string nameOrPost)
         {
             string[] tempArray = new string[array.Length + 1];
             for (int i = 0; i < array.Length; i++)
@@ -84,19 +84,19 @@ namespace HomeWork
                 }
             }
         }
-        static void FindName(string[] name)
+        static void FindName(string[] names)
         {
             string findName;
             bool findLuck = false;
             Console.Write("Введите фамилию: ");
             findName = Console.ReadLine();
-            for (int i = 0; i < name.Length; i++)
+            for (int i = 0; i < names.Length; i++)
             {
-                string[] wors = name[i].Split(' ');
+                string[] wors = names[i].Split(' ');
                 if (findName.ToLower() == wors[0].ToLower())
                 {
                     Console.Write((i + 1) + " ");
-                    Console.Write(name[i]);
+                    Console.Write(names[i]);
                     findLuck = true;
                     Console.WriteLine();
                 }
