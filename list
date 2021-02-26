@@ -6,10 +6,18 @@ namespace List
 {
     class Program
     {
-        static int ConvertStringToInt (string userInput)
+        static int ConvertStringToInt(string userInput)
         {
-            int.TryParse(userInput, out int result);
-            return result;
+            if (int.TryParse(userInput, out int result))
+            {
+                return result;
+            }
+            else
+            {
+                Console.WriteLine("Введено не число");
+                Console.ReadKey();
+                return result;
+            }
         }
         static void Main(string[] args)
         {
@@ -17,7 +25,7 @@ namespace List
             string userInput;
             int sum;
 
-            while(true)
+            while (true)
             {
                 Console.Clear();
                 Console.WriteLine("Команда exit для выхода из программы\nКоманда sum выводит сумму всех введенных чисел");
@@ -25,7 +33,7 @@ namespace List
                 userInput = Console.ReadLine();
                 if (userInput == "exit")
                     break;
-                else if (userInput == "sum")
+                if (userInput == "sum")
                 {
                     sum = 0;
                     for (int i = 0; i < numbers.Count; i++)
@@ -36,7 +44,9 @@ namespace List
                     Console.ReadKey();
                 }
                 else
+                {
                     numbers.Add(ConvertStringToInt(userInput));
+                }
             }
         }
     }
