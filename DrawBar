@@ -7,16 +7,17 @@ namespace MyHomeWork
         static void DrawBar(int currentValue, int maxValue, ConsoleColor color, int position)
         {
             int persent;
+            int numberOfCharacters = 10;
             persent = currentValue * 100 / maxValue;
             ConsoleColor defaultColor = Console.BackgroundColor;
             string bar = "";
-            if ((persent % 10) < 5)
+            if ((persent % numberOfCharacters) < 5)
             {
-                persent /= 10;
+                persent /= numberOfCharacters;
             }
             else
             {
-                persent = persent / 10 + 1;
+                persent = persent / numberOfCharacters + 1;
             }
             for (int i = 0; i < persent; i++)
             {
@@ -28,7 +29,7 @@ namespace MyHomeWork
             Console.Write(bar);
             Console.BackgroundColor = ConsoleColor.Red;
             bar = "";
-            for (int i = persent; i < 10; i++)
+            for (int i = persent; i < numberOfCharacters; i++)
             {
                 bar += '_';
             }
