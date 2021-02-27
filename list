@@ -24,16 +24,17 @@ namespace List
             List<int> numbers = new List<int>();
             string userInput;
             int sum;
+            bool programRunning = true;
 
-            while (true)
+            while (programRunning)
             {
                 Console.Clear();
                 Console.WriteLine("Команда exit для выхода из программы\nКоманда sum выводит сумму всех введенных чисел");
                 Console.Write("Введите число: ");
                 userInput = Console.ReadLine();
                 if (userInput == "exit")
-                    break;
-                if (userInput == "sum")
+                    programRunning = false;
+                else if (userInput == "sum")
                 {
                     sum = 0;
                     for (int i = 0; i < numbers.Count; i++)
