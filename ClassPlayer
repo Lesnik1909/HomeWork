@@ -1,0 +1,37 @@
+using System;
+
+namespace ClassPlayer
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Player[] players = { new Player(1, "Dark", 100, "Ork"), new Player(2, "Holy", 75, "Human"), new Player(3, "Song", 84, "Dwarf") };
+            for (int i = 0; i < players.Length; i++)
+            {
+                players[i].ShowInfo();
+            }
+        }
+    }
+
+    class Player
+    {
+        private string _name;
+        private int _playerId;
+        private int _level;
+        private string _race;
+
+        public Player (int playerId, string name, int level, string race)
+        {
+            _name = name;
+            _level = level;
+            _race = race;
+            _playerId = playerId;
+        }
+
+        public void ShowInfo()
+        {
+            Console.WriteLine($"{_playerId} Name - {_name}, level {_level}, race - {_race}");
+        }
+    }
+}
