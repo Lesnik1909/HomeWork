@@ -1,0 +1,109 @@
+using System;
+using System.Collections.Generic;
+
+namespace MyLittleBase
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Base myBase = new Base();
+            string userInput;
+            bool working = true;
+            int newId = 0;
+            string name;
+            int level;
+            int id;
+            
+            while (working)
+            {
+                Console.WriteLine("1 - Добавление нового игрока \n" +
+                    "2 - \n" +
+                    "3 - \n" +
+                    "4 - Вывод всех игроков \n" +
+                    "5 - Выход");
+                userInput = Console.ReadLine();
+                switch (userInput)
+                {
+                    case "1":        
+                        Console.Write("Введите имя нового игрока " );
+                        name = Console.ReadLine();
+                        Console.Write("Введите уровень ");
+                        int.TryParse(Console.ReadLine(), out level);
+                        Player player1 = new Player(name, level, newId);
+                        myBase.AddElement(player1);
+                        newId++;
+                        break;
+                    case "2":
+                        Console.WriteLine("Введите Id удаляемого пользователя");
+                        int.TryParse(Console.ReadLine(), out id);
+                        myBase.DelElement(id);
+                        break;
+                    case "3":
+                        break;
+                    case "4":
+                        myBase.ShowList();
+                        Console.ReadKey();
+                        break;
+                    case "5":
+                        working = false;
+                        break;
+                }               
+                Console.Clear();
+            }
+        }
+    }
+
+    class Player
+    {
+        private string _name;
+        private int _level;
+        private int _id;
+        private bool _ban;
+
+        public Player(string name, int level, int id)
+        {
+            _name = name;
+            _level = level;
+            _id = id;
+            _ban = false;
+
+        }
+
+        public void ShowPlayer()
+        {
+            Console.Write($"Id игрока: {_id}, Имя - {_name}, Уровень - {_level}");
+            if (_ban == true)
+                Console.WriteLine(" Забанен");
+            else
+                Console.WriteLine(" Незабанен");
+        }
+    }
+    class Base
+    {
+        private List<Player> _myBase;
+        public Base()
+        {
+             _myBase = new List<Player>();
+        }
+
+        public void AddElement (Player element)
+        {
+            _myBase.Add(element);
+        }
+
+        public void DelElement (int id)
+        {
+            _myBase.RemoveAt(id);
+        }
+
+        public void ShowList ()
+        {
+            foreach (var item in _myBase)
+            {
+                item.ShowPlayer();
+            }
+            
+        }
+    }
+}
