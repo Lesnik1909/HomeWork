@@ -1,60 +1,118 @@
 using System;
+using System.Collections.Generic;
 
-namespace ClassPlayer
+namespace MyLittleBase
 {
     class Program
     {
         static void Main(string[] args)
         {
-            Rendering render = new Rendering();
-            Player player1 = new Player (2,2);
-            render.DrawPlaer(player1.X, player1.Y);
-        }
-    }
+            Base myBase = new Base();
+            string userInput;
+            bool working = true;
+            int newId = 0;
+            string name;
+            int level;
+            int id;
 
-    class Rendering
-    {
-        public void DrawPlaer(int x, int y, char symbol = '\u0002')
-        {
-            Console.SetCursorPosition(x, y);
-            Console.WriteLine(symbol);
+            while (working)
+            {
+                Console.WriteLine("1 - Добавление нового игрока \n" +
+                    "2 - Удаление элемента\n" +
+                    "3 - \n" +
+                    "4 - \n" +
+                    "5 - Вывод всех игроков \n" +
+                    "6 - Выход");
+                userInput = Console.ReadLine();
+                switch (userInput)
+                {
+                    case "1":
+                        Console.Write("Введите имя нового игрока ");
+                        name = Console.ReadLine();
+                        Console.Write("Введите уровень ");
+                        int.TryParse(Console.ReadLine(), out level);
+                        Player player1 = new Player(name, level, newId);
+                        myBase.AddElement(player1);
+                        newId++;
+                        break;
+                    case "2":
+                        Console.Write("Введите Id удаляемого пользователя ");
+                        int.TryParse(Console.ReadLine(), out id);
+                        myBase.DelElement(id);
+                        break;
+                    case "3":
+                        break;
+                    case "5":
+                        myBase.ShowList();
+                        Console.ReadKey();
+                        break;
+                    case "6":
+                        working = false;
+                        break;
+                }
+                Console.Clear();
+            }
         }
     }
 
     class Player
     {
-        private int _x;
-        private int _y;
+        private string _name;
+        private int _level;
+        private int _id;
+        private bool _ban;
 
-        public int X
+        public int Id
         {
             get
             {
-                return _x;
-            }
-            private set
-            {
-                if(value > 0 && value < 100)
-                    _x = value;
+                return _id;
             }
         }
 
-        public int Y 
+        public Player(string name, int level, int id)
         {
-            get 
-            {
-                return _y;
-            }
-            private set
-            {
-                if (value > 0)
-                    _y = value;
-            }
+            _name = name;
+            _level = level;
+            _id = id;
+            _ban = false;
+
         }
-        public Player (int x = 0, int y = 0)
+
+        public void ShowPlayer()
         {
-            _x = x;
-            _y = y;
+            Console.Write($"Id игрока: {_id}, Имя - {_name}, Уровень - {_level}");
+            if (_ban == true)
+                Console.WriteLine(" Забанен");
+            else
+                Console.WriteLine(" Незабанен");
+        }
+    }
+    class Base
+    {
+        private List<Player> _myBase;
+        public Base()
+        {
+            _myBase = new List<Player>();
+        }
+
+        public void AddElement(Player element)
+        {
+            _myBase.Add(element);
+        }
+
+        public void DelElement(int id)
+        {
+            _myBase.RemoveAll(i => i.Id == id);
+        }
+
+        public void ShowList()
+        {
+            foreach (var item in _myBase)
+            {
+                item.ShowPlayer();
+            }
+
         }
     }
 }
