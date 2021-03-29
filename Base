@@ -14,19 +14,20 @@ namespace MyLittleBase
             string name;
             int level;
             int id;
-            
+
             while (working)
             {
                 Console.WriteLine("1 - Добавление нового игрока \n" +
-                    "2 - \n" +
-                    "3 - \n" +
-                    "4 - Вывод всех игроков \n" +
-                    "5 - Выход");
+                    "2 - Удаление элемента\n" +
+                    "3 - Забанить игрока по ID\n" +
+                    "4 - Разбанить игрока по ID\n" +
+                    "5 - Вывод всех игроков \n" +
+                    "6 - Выход");
                 userInput = Console.ReadLine();
                 switch (userInput)
                 {
-                    case "1":        
-                        Console.Write("Введите имя нового игрока " );
+                    case "1":
+                        Console.Write("Введите имя нового игрока ");
                         name = Console.ReadLine();
                         Console.Write("Введите уровень ");
                         int.TryParse(Console.ReadLine(), out level);
@@ -35,20 +36,28 @@ namespace MyLittleBase
                         newId++;
                         break;
                     case "2":
-                        Console.WriteLine("Введите Id удаляемого пользователя");
+                        Console.Write("Введите Id удаляемого пользователя ");
                         int.TryParse(Console.ReadLine(), out id);
                         myBase.DelElement(id);
                         break;
                     case "3":
+                        Console.Write("Введите Id пользователя для забанивания ");
+                        int.TryParse(Console.ReadLine(), out id);
+                        myBase.Ban(id);
                         break;
                     case "4":
+                        Console.Write("Введите Id пользователя для разбанивания ");
+                        int.TryParse(Console.ReadLine(), out id);
+                        myBase.UnBan(id);
+                        break;
+                    case "5":
                         myBase.ShowList();
                         Console.ReadKey();
                         break;
-                    case "5":
+                    case "6":
                         working = false;
                         break;
-                }               
+                }
                 Console.Clear();
             }
         }
@@ -60,6 +69,14 @@ namespace MyLittleBase
         private int _level;
         private int _id;
         private bool _ban;
+
+        public int Id
+        {
+            get
+            {
+                return _id;
+            }
+        }
 
         public Player(string name, int level, int id)
         {
@@ -78,32 +95,51 @@ namespace MyLittleBase
             else
                 Console.WriteLine(" Незабанен");
         }
+
+        public void Ban()
+        {
+             _ban = true;
+        }
+        
+        public void UnBan()
+        {
+            _ban = false;
+        }
     }
     class Base
     {
         private List<Player> _myBase;
         public Base()
         {
-             _myBase = new List<Player>();
+            _myBase = new List<Player>();
         }
 
-        public void AddElement (Player element)
+        public void AddElement(Player element)
         {
             _myBase.Add(element);
         }
 
-        public void DelElement (int id)
+        public void DelElement(int id)
         {
-            _myBase.RemoveAt(id);
+            _myBase.RemoveAll(i => i.Id == id);
         }
 
-        public void ShowList ()
+        public void Ban(int id)
+        {
+            _myBase.Find(i => i.Id == id).Ban();
+        }
+        
+        public void UnBan(int id)
+        {
+            _myBase.Find(i => i.Id == id).UnBan();
+        }
+
+        public void ShowList()
         {
             foreach (var item in _myBase)
             {
                 item.ShowPlayer();
             }
-            
         }
     }
 }
