@@ -9,21 +9,22 @@ namespace HomeWork3
             int randomNumber;
             int rangeStart = 1;
             int rangeFinish = 100;
-            bool isWorking = true;
             int baseOfDegree = 2;
+            int resultOfDegree = baseOfDegree;
             int degree = 1;
 
             Random rand = new Random();
             randomNumber = rand.Next(rangeStart, rangeFinish);
             Console.WriteLine($"Случайное число: {randomNumber}");
 
-            while (isWorking)
+            while (true)
             {
-                if (Math.Pow(baseOfDegree, degree) > randomNumber)
+                if (resultOfDegree > randomNumber)
                 {
                     break;
                 }
                 degree++;
+                resultOfDegree *= baseOfDegree;
             }
 
             Console.WriteLine($"\nМинимальная степень {baseOfDegree}: {degree}");
