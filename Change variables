@@ -6,17 +6,17 @@ namespace HomeWork3
     {
         static void Main(string[] args)
         {
-            string Name = "Иванов";
-            string Surname = "Константин";
-            string ChangeBuffer;
+            string name = "Иванов";
+            string surname = "Константин";
+            string changeBuffer;
 
-            Console.WriteLine($"Неправильный вариант: Имя - {Name}, Фамилия - {Surname}");
+            Console.WriteLine($"Неправильный вариант: Имя - {name}, Фамилия - {surname}");
 
-            ChangeBuffer = Name;
-            Name = Surname;
-            Surname = ChangeBuffer;
+            changeBuffer = name;
+            name = surname;
+            surname = changeBuffer;
 
-            Console.WriteLine($"Правильный вариант: Имя - {Name}, Фамилия - {Surname}");
+            Console.WriteLine($"Правильный вариант: Имя - {name}, Фамилия - {surname}");
         }
     }
 }
