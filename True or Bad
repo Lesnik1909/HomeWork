@@ -1,0 +1,51 @@
+using System;
+
+namespace HomeWork3
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            string text;
+            int nestingDepth = 0;
+            int maxNestingDepth = 0;
+            bool badString = false;
+
+            Console.Write("Введите последовательность ( и ): ");
+            text = Console.ReadLine();
+
+            foreach (var symbol in text)
+            {
+                if ((symbol == '(') || (symbol == ')'))
+                {
+                    if ((symbol == ')') && (nestingDepth == 0))
+                    {
+                        badString = true;
+                        break;
+                    }
+                    else if (symbol == '(')
+                    {
+                        nestingDepth++;
+                        if (nestingDepth > maxNestingDepth)
+                        {
+                            maxNestingDepth = nestingDepth;
+                        }
+                    }
+                    else if (symbol == ')')
+                    {
+                        nestingDepth--;
+                    }
+                }
+            }
+
+            if ((nestingDepth == 0) && (badString != true))
+            {
+                Console.WriteLine($"Строка корректна и максимальная глубина равна {maxNestingDepth}");
+            }
+            else 
+            {
+                Console.WriteLine("Строка не корректна");
+            }
+        }
+    }
+}
