@@ -1,0 +1,22 @@
+using System;
+
+namespace HomeWork3
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            string Name = "Иванов";
+            string Surname = "Константин";
+            string ChangeBuffer;
+
+            Console.WriteLine($"Неправильный вариант: Имя - {Name}, Фамилия - {Surname}");
+
+            ChangeBuffer = Name;
+            Name = Surname;
+            Surname = ChangeBuffer;
+
+            Console.WriteLine($"Правильный вариант: Имя - {Name}, Фамилия - {Surname}");
+        }
+    }
+}
