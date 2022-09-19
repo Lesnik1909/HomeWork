@@ -1,0 +1,32 @@
+using System;
+
+namespace HomeWork3
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            int randomNumber;
+            int rangeStart = 1;
+            int rangeFinish = 100;
+            bool isWorking = true;
+            int baseOfDegree = 2;
+            int degree = 1;
+
+            Random rand = new Random();
+            randomNumber = rand.Next(rangeStart, rangeFinish);
+            Console.WriteLine($"Случайное число: {randomNumber}");
+
+            while (isWorking)
+            {
+                if (Math.Pow(baseOfDegree, degree) > randomNumber)
+                {
+                    break;
+                }
+                degree++;
+            }
+
+            Console.WriteLine($"\nМинимальная степень {baseOfDegree}: {degree}");
+        }
+    }
+}
