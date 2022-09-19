@@ -1,0 +1,32 @@
+using System;
+
+namespace HomeWork3
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            int randomNumber;
+            int result = 0;
+            int firstDivider = 3;
+            int secondDivider = 5;
+
+            Random rand = new Random();
+
+            randomNumber = rand.Next(1, 100);
+
+            Console.WriteLine($"Случайное число: {randomNumber}");
+
+            for (int numberСounter = 1; numberСounter <= randomNumber; numberСounter++)
+            {
+                if ((numberСounter % firstDivider == 0) || (numberСounter % secondDivider == 0))
+                {
+                    result += numberСounter;
+                    Console.Write(numberСounter + " ");
+                }
+            }
+
+            Console.WriteLine($"\nСумма числе кратных {firstDivider} и {secondDivider}: {result}");
+        }
+    }
+}
