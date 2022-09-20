@@ -1,0 +1,52 @@
+using System;
+
+namespace HomeWork3
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            int arrayLength = 30;
+            int currentNumber;
+            int desiredNumber;
+            int lengthCounter = 1;
+            int lengthMaxCounter = lengthCounter;
+            int[] array = new int[arrayLength];
+            int randomMin = 1;
+            int randomMax = 10;
+            Random random = new Random();
+
+            for (int i = 0; i < array.Length; i++)
+            {
+                array[i] = random.Next(randomMin, randomMax);
+                Console.Write($"{array[i]} ");
+            }
+
+            currentNumber = array[0];
+            desiredNumber = currentNumber;
+
+            for (int i = 1; i < array.Length; i++)
+            {
+
+                if (currentNumber == array[i])
+                {
+                    lengthCounter++;
+                }
+                else
+                {
+                    lengthCounter = 1;
+                    currentNumber = array[i];
+                }
+
+                if (lengthCounter > lengthMaxCounter)
+                {
+                    lengthMaxCounter = lengthCounter;
+                    desiredNumber = currentNumber;
+                }
+
+            }
+
+            Console.WriteLine($"\nСамая длинная последовательность из {desiredNumber} длиной в {lengthMaxCounter} символов");
+        }
+    }
+}
