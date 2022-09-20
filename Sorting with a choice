@@ -1,0 +1,53 @@
+using System;
+
+namespace HomeWork3
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            int minNumberIndex;
+            int bufferElement;
+            int arrayLength = 30;
+            int[] array = new int[arrayLength];
+            int randomMin = 1;
+            int randomMax = 100;
+            Random random = new Random();
+
+            for (int i = 0; i < array.Length; i++)
+            {
+                array[i] = random.Next(randomMin, randomMax);
+                Console.Write($"{array[i]} ");
+            }
+
+            Console.WriteLine("");
+
+            for (int i = 0; i < array.Length; i++)
+            {
+                minNumberIndex = i;
+
+                for (int j = i + 1; j < array.Length; j++)
+                {
+                    if (array[minNumberIndex] > array[j])
+                    {
+                        minNumberIndex = j;
+                    }
+                }
+
+                if (i != minNumberIndex)
+                {
+                    bufferElement = array[i];
+                    array[i] = array[minNumberIndex];
+                    array[minNumberIndex] = bufferElement;
+                }
+                
+            }
+
+            for (int i = 0; i < array.Length; i++)
+            {
+                Console.Write($"{array[i]} ");
+            }
+
+        }
+    }
+}
