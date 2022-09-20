@@ -7,23 +7,25 @@ namespace HomeWork3
         static void Main(string[] args)
         {
             string text;
+            char leftBracket = '(';
+            char rightBracket = ')';
             int nestingDepth = 0;
             int maxNestingDepth = 0;
-            bool badString = false;
+            bool stringIsCorrect = true;
 
-            Console.Write("Введите последовательность ( и ): ");
+            Console.Write($"Введите последовательность {leftBracket} и {rightBracket}: ");
             text = Console.ReadLine();
 
             foreach (var symbol in text)
             {
-                if ((symbol == '(') || (symbol == ')'))
+                if ((symbol == leftBracket) || (symbol == rightBracket))
                 {
-                    if ((symbol == ')') && (nestingDepth == 0))
+                    if ((symbol == rightBracket) && (nestingDepth == 0))
                     {
-                        badString = true;
+                        stringIsCorrect = false;
                         break;
                     }
-                    else if (symbol == '(')
+                    else if (symbol == leftBracket)
                     {
                         nestingDepth++;
                         if (nestingDepth > maxNestingDepth)
@@ -31,18 +33,18 @@ namespace HomeWork3
                             maxNestingDepth = nestingDepth;
                         }
                     }
-                    else if (symbol == ')')
+                    else if (symbol == rightBracket)
                     {
                         nestingDepth--;
                     }
                 }
             }
 
-            if ((nestingDepth == 0) && (badString != true))
+            if ((nestingDepth == 0) && (stringIsCorrect != false))
             {
                 Console.WriteLine($"Строка корректна и максимальная глубина равна {maxNestingDepth}");
             }
-            else 
+            else
             {
                 Console.WriteLine("Строка не корректна");
             }
