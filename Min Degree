@@ -12,17 +12,12 @@ namespace HomeWork3
             int baseOfDegree = 2;
             int resultOfDegree = baseOfDegree;
             int degree = 1;
-
-            Random rand = new Random();
-            randomNumber = rand.Next(rangeStart, rangeFinish);
+            Random random = new Random();
+            randomNumber = random.Next(rangeStart, rangeFinish);
             Console.WriteLine($"Случайное число: {randomNumber}");
 
-            while (true)
+            while (resultOfDegree < randomNumber)
             {
-                if (resultOfDegree > randomNumber)
-                {
-                    break;
-                }
                 degree++;
                 resultOfDegree *= baseOfDegree;
             }
