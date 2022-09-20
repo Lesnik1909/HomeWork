@@ -48,6 +48,7 @@ namespace HomeWork3
             {
                 Console.WriteLine("Строка не корректна");
             }
+            
         }
     }
 }
