@@ -1,8 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HomeWork3
 {
@@ -10,9 +6,9 @@ namespace HomeWork3
     {
         static void PrintArray (int[] array)
         {
-            foreach (var item in array)
+            foreach (var element in array)
             {
-                Console.Write($"{item} ");
+                Console.Write($"{element} ");
             }
         }
 
