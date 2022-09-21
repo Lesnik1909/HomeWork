@@ -1,0 +1,21 @@
+using System;
+
+namespace HomeWork3
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            string sourceText = "Без труда не выловить и рыбки из пруда";
+            string[] arrayOfWords;
+
+            arrayOfWords = sourceText.Split(' ');
+
+            foreach (var word in arrayOfWords)
+            {
+                Console.WriteLine(word);
+            }
+
+        }
+    }
+}
