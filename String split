@@ -7,15 +7,12 @@ namespace HomeWork3
         static void Main(string[] args)
         {
             string sourceText = "Без труда не выловить и рыбки из пруда";
-            string[] arrayOfWords;
-
-            arrayOfWords = sourceText.Split(' ');
+            string[] arrayOfWords = sourceText.Split(' ');
 
             foreach (var word in arrayOfWords)
             {
                 Console.WriteLine(word);
             }
-
         }
     }
 }
