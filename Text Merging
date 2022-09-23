@@ -1,0 +1,50 @@
+using System;
+using System.Collections.Generic;
+
+
+namespace HomeWork3
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            string[] firstText = { "1", "2", "3", "4", "5"};
+            string[] secondText = { "1", "6", "3", "8", "5"};
+            List<string> result = new List<string>();
+
+            AddToList(ref result, firstText);
+            AddToList(ref result, secondText);
+
+            foreach (var item in result)
+            {
+                Console.Write(item + " ");
+            }
+        }
+
+        static bool EnumerationList (List<string> chekList, string chekElement)
+        {
+            bool isSuccess = true;
+
+            foreach (var item in chekList)
+            {
+                if (item == chekElement)
+                {
+                    isSuccess = false;
+                }                    
+            }
+
+            return isSuccess;
+        }
+
+        static void AddToList (ref List<string> resultList, string[] textArray)
+        {
+            for (int i = 0; i < textArray.Length; i++)
+            {
+                if (EnumerationList(resultList, textArray[i]))
+                {
+                    resultList.Add(textArray[i]);
+                }
+            }
+        }
+    }
+}
