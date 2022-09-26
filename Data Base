@@ -1,0 +1,142 @@
+using System;
+using System.Collections.Generic;
+
+namespace HomeWork3
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            int idCounter = 0;            
+            string userInput;            
+            bool isWorking = true;
+            Dictionary<int, Player> dataBase = new Dictionary<int, Player>();
+
+            while (isWorking)
+            {
+                Console.Clear();
+                Console.WriteLine("1 - Вывод всей базы");
+                Console.WriteLine("2 - Добавлние нового игрока");
+                Console.WriteLine("3 - Удаление игрока по ID");
+                Console.WriteLine("4 - Изменение статуса игрока по ID");
+                Console.WriteLine("5 - Выход из программы");
+                Console.Write("Выберите пункт меню ");
+                userInput = Console.ReadLine();
+
+                switch (userInput)
+                {
+                    case "1":
+                        ShowAllBase(dataBase);
+                        break;
+                    case "2":
+                        AddNewPlayer(dataBase, ref idCounter);
+                        break;
+                    case "3":
+                        RemovePlayer(dataBase);
+                        break;
+                    case "4":
+                        ChangeStatusPlayer(dataBase);
+                        break;
+                    case "5":
+                        isWorking = false;
+                        break;
+                }                
+            }
+        }
+
+        static void ShowAllBase(Dictionary<int, Player> dataBase)
+        {
+            foreach (var item in dataBase)
+            {
+                Console.WriteLine($"{item.Key} {item.Value.Name} {item.Value.Level} уровня {item.Value.ShowBannedStatus()}");
+                item.Value.ShowBannedStatus();
+            }
+            Console.ReadKey();
+        }
+
+        static void AddNewPlayer(Dictionary<int, Player> dataBase, ref int idCounter)
+        {
+            Console.Write("Введите имя нового игрока: ");
+            string userName = Console.ReadLine();
+            Console.Write($"Введите уровень игрока {userName}: ");
+            int.TryParse(Console.ReadLine(), out int userLevel);
+            idCounter++;
+            dataBase.Add(idCounter, new Player(userName, userLevel));
+        }
+
+        static void RemovePlayer(Dictionary<int, Player> dataBase)
+        {
+            Console.Write("Введите ID игрока: ");
+            int.TryParse(Console.ReadLine(), out int idChangePlayer);
+
+            if (dataBase.ContainsKey(idChangePlayer))
+            {
+                Console.WriteLine($"Игрока {dataBase[idChangePlayer].Name} удален");
+                dataBase.Remove(idChangePlayer);
+            }
+            else
+            {
+                Console.WriteLine("Игрока с таким ID не существует");
+            }
+
+            Console.ReadKey();
+        }
+
+        static void ChangeStatusPlayer(Dictionary<int, Player> dataBase)
+        {
+            Console.Write("Введите ID игрока: ");
+            int.TryParse(Console.ReadLine(), out int idChangePlayer);
+
+            if (dataBase.ContainsKey(idChangePlayer))
+            {
+                dataBase[idChangePlayer].ChangeBannedStatus();
+                Console.WriteLine($"Статус игрока {dataBase[idChangePlayer].Name} изменен на {dataBase[idChangePlayer].ShowBannedStatus()}");
+            }
+            else
+            {
+                Console.WriteLine("Игрока с таким ID не существует");
+            }
+
+            Console.ReadKey();
+        }
+    }
+
+    class Player
+    {
+        public string Name { get; private set; }
+        public int Level { get; private set; }
+        public bool IsBanned { get; private set; }
+
+        public Player(string name, int level)
+        {
+            Name = name;
+            Level = level;
+            IsBanned = false;
+        }
+
+        public void ChangeBannedStatus()
+        {
+            if (IsBanned == false)
+            {
+                IsBanned = true;
+            }
+            else
+            {
+                IsBanned = false;
+            }
+            
+        }
+        
+        public string ShowBannedStatus()
+        {
+            string text = "Не забанен";
+
+            if (IsBanned == true)
+            {
+                text =  "Забанен";
+            }
+
+            return text;
+        }
+    }
+}
