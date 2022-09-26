@@ -32,7 +32,7 @@ namespace HomeWork3
             while (collectedTreasures < allTreasures)
             {
                 DrawBag(collectedTreasures, allTreasures);
-                DrawMap(map);               
+                DrawMap(map);
                 DrawPlaer(userPositionX, userPositionY);
                 MovePlaer(ref userPositionX, ref userPositionY, map);
 
@@ -77,36 +77,29 @@ namespace HomeWork3
             Console.WriteLine($"Собранные сокровища {countItem}/{maxItem}");
         }
 
-        static void MovePlaer(ref int userX, ref int userY, char[,] map)
+        static void MovePlaer(ref int userPositionX, ref int userPositionY, char[,] map)
         {
             char wallSymbol = '#';
+
             ConsoleKeyInfo userInput = Console.ReadKey();
 
             switch (userInput.Key)
             {
                 case ConsoleKey.UpArrow:
-                    if (map[userX - 1, userY] != wallSymbol)
-                    {
-                        userX--;
-                    }
+                    if (map[userPositionX - 1, userPositionY] != wallSymbol)
+                        userPositionX--;                   
                     break;
                 case ConsoleKey.DownArrow:
-                    if (map[userX + 1, userY] != wallSymbol)
-                    {
-                        userX++;
-                    }
+                    if (map[userPositionX + 1, userPositionY] != wallSymbol)
+                        userPositionX++;                    
                     break;
                 case ConsoleKey.LeftArrow:
-                    if (map[userX, userY - 1] != wallSymbol)
-                    {
-                        userY--;
-                    }
+                    if (map[userPositionX, userPositionY - 1] != wallSymbol)
+                        userPositionY--;                   
                     break;
                 case ConsoleKey.RightArrow:
-                    if (map[userX, userY + 1] != wallSymbol)
-                    {
-                        userY++;
-                    }
+                    if (map[userPositionX, userPositionY + 1] != wallSymbol)
+                        userPositionY++;                   
                     break;
             }
         }
