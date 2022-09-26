@@ -7,7 +7,7 @@ namespace HomeWork3
         static void Main(string[] args)
         {
             Console.CursorVisible = false;
-            
+
             char[,] map = new char[,] {
                 {'#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', },
                 {'#', ' ', ' ', '#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#', },
@@ -22,26 +22,23 @@ namespace HomeWork3
                 {'#', ' ', ' ', '#', ' ', ' ', '#', ' ', ' ', ' ', ' ', ' ', 'X', ' ', ' ', '#', ' ', ' ', '#', ' ', '#', },
                 {'#', ' ', ' ', '#', ' ', ' ', '#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#', ' ', '#', },
                 {'#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', }};
-            int userX = 9, userY = 9;
+            int userPositionX = 9;
+            int userPositionY = 9;
             char graundSymbol = ' ';
-            char plaerSymbol = '\u0002';
             char treasureSymbol = 'X';
             int collectedTreasures = 0;
             int allTreasures = 5;
 
-
             while (collectedTreasures < allTreasures)
             {
-                Console.SetCursorPosition(0, 15);
-                Console.WriteLine($"Собранные сокровища {collectedTreasures}/{allTreasures}");
-                DrawMap(map);
-                Console.SetCursorPosition(userY, userX);
-                Console.Write(plaerSymbol);
-                PlaerMove(ref userX, ref userY, map);
+                DrawBag(collectedTreasures, allTreasures);
+                DrawMap(map);               
+                DrawPlaer(userPositionX, userPositionY);
+                MovePlaer(ref userPositionX, ref userPositionY, map);
 
-                if (map[userX,userY] == treasureSymbol)
+                if (map[userPositionX, userPositionY] == treasureSymbol)
                 {
-                    map[userX, userY] = graundSymbol;
+                    map[userPositionX, userPositionY] = graundSymbol;
                     collectedTreasures++;
                 }
 
@@ -61,12 +58,26 @@ namespace HomeWork3
                 {
                     Console.Write(map[i, j]);
                 }
-                
+
                 Console.WriteLine();
             }
         }
 
-        static void PlaerMove(ref int userX, ref int userY, char[,] map)
+        static void DrawPlaer(int userPositionX, int userPositionY)
+        {
+            char plaerSymbol = '\u0002';
+
+            Console.SetCursorPosition(userPositionY, userPositionX);
+            Console.Write(plaerSymbol);
+        }
+
+        static void DrawBag(int countItem, int maxItem)
+        {
+            Console.SetCursorPosition(0, 15);
+            Console.WriteLine($"Собранные сокровища {countItem}/{maxItem}");
+        }
+
+        static void MovePlaer(ref int userX, ref int userY, char[,] map)
         {
             char wallSymbol = '#';
             ConsoleKeyInfo userInput = Console.ReadKey();
