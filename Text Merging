@@ -14,9 +14,9 @@ namespace HomeWork3
             AddToList(result, firstText);
             AddToList(result, secondText);
 
-            foreach (var item in result)
+            foreach (var element in result)
             {
-                Console.Write(item + " ");
+                Console.Write(element + " ");
             }
         }
 
