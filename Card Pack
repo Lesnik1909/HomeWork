@@ -2,29 +2,38 @@ using System;
 using System.Collections.Generic;
 
 namespace HomeWork3
-{
+{ 
     class Program
     {
+        private const ConsoleColor RedCard = ConsoleColor.Red;
+        private const ConsoleColor BlackCard = ConsoleColor.DarkBlue;
         static void Main(string[] args)
         {
             bool isWorking = true;
             int cardInPack = 0;
             string userInput;
             char[] cardSuit = new char[] { '\u2663', '\u2660', '\u2665', '\u2666' };
+            string[] cardValue = new string[] { "T", "K", "D", "V", "10", "9", "8", "7", "6" };
             CardPack cardPack = new CardPack();
             CardPack playerHand = new CardPack();
 
             for (int i = 0; i < cardSuit.Length; i++)
             {
-                for (int j = 0; j < 9; j++)
+                for (int j = 0; j < cardValue.Length; j++)
                 {
-                    cardPack.AddCard(j, cardSuit[i]);
-                    cardInPack++;
+                    if (i < 2)
+                    {
+                        cardPack.AddCard(cardValue[j], cardSuit[i], BlackCard);
+                        cardInPack++;
+                    }
+                    else
+                    {
+                        cardPack.AddCard(cardValue[j], cardSuit[i], RedCard);
+                        cardInPack++;
+                    }                  
                 }
             }
-
             
-
             while (isWorking)
             {
                 Console.Clear();
@@ -91,28 +100,24 @@ namespace HomeWork3
         }
     }
 
-    enum CardValue
-    {
-        туз,
-        король,
-        дама,
-        валет, 
-        десятка,
-        девятка,
-        восьмерка,
-        семерка,
-        шестерка
-    }
-
     class Card
     {
-        public CardValue CardValue { get; private set; }
+        public string CardValue { get; private set; }
         public char CardSuit { get; private set; }
+        public ConsoleColor CardColor { get; private set; }
 
-        public Card (CardValue value, char suit)
+        public Card (string value, char suit, ConsoleColor color)
         {
             CardSuit = suit;
             CardValue = value;
+            CardColor = color;
+        }
+
+        public void ShowCard ()
+        {
+            Console.ForegroundColor = CardColor;
+            Console.WriteLine($"{CardSuit}{CardValue}");
+            Console.ResetColor();
         }
     }
 
@@ -125,9 +130,9 @@ namespace HomeWork3
             Pack = new List<Card>();
         }
 
-        public void AddCard (int cardValue, char cardSuit)
+        public void AddCard (string cardValue, char cardSuit, ConsoleColor cardColor)
         {
-            Pack.Add(new Card((CardValue)cardValue, cardSuit));
+            Pack.Add(new Card(cardValue, cardSuit, cardColor));
         }
 
         public void CopyCard(int index, List<Card> firstPack)
@@ -145,7 +150,7 @@ namespace HomeWork3
             Console.WriteLine("Ваши карты:");
             foreach (var card in Pack)
             {
-                Console.WriteLine($"{card.CardValue} {card.CardSuit}");
+                card.ShowCard();
             }
         }
     }
