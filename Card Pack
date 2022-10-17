@@ -1,0 +1,152 @@
+using System;
+using System.Collections.Generic;
+
+namespace HomeWork3
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            bool isWorking = true;
+            int cardInPack = 0;
+            string userInput;
+            char[] cardSuit = new char[] { '\u2663', '\u2660', '\u2665', '\u2666' };
+            CardPack cardPack = new CardPack();
+            CardPack playerHand = new CardPack();
+
+            for (int i = 0; i < cardSuit.Length; i++)
+            {
+                for (int j = 0; j < 9; j++)
+                {
+                    cardPack.AddCard(j, cardSuit[i]);
+                    cardInPack++;
+                }
+            }
+
+            
+
+            while (isWorking)
+            {
+                Console.Clear();
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine($"1 - Показать карты игрока");
+                Console.WriteLine($"2 - Взять карту из колоды");
+                Console.WriteLine($"3 - Взять несколько карт из колоды");
+                Console.WriteLine($"4 - Показать карты в колоде");
+                Console.WriteLine($"5 - Выход");
+                Console.ResetColor();
+
+                userInput = Console.ReadLine();
+
+                switch(userInput)
+                {
+                    case "1":                                                
+                        playerHand.ShowCards();
+                        break;
+                    case "2":
+                        playerHand.CopyCard(1, cardPack.Pack);
+                        break;
+                    case "3":
+                        TakeCard(ref cardInPack, cardPack, playerHand);
+                        break;
+                    case "4":
+                        cardPack.ShowCards();
+                        break;
+                    case "5":
+                        isWorking = false;
+                        break;
+                }
+
+                Console.ReadKey();
+            }
+        }
+        
+        static void TakeCard (ref int cardInPack, CardPack cardPack, CardPack playerHand)
+        {
+            int randomValue;
+            Random random = new Random();
+
+            Console.WriteLine("Сколько карт взять из колоды: ");
+            if (int.TryParse(Console.ReadLine(), out int cardCounter))
+            {
+                if ((cardCounter > cardInPack) || (cardCounter < 0))
+                {
+                    Console.WriteLine("В колоде нет столько карт");
+                }
+                else
+                {
+                    for (int i = 0; i < cardCounter; i++)
+                    {
+                        randomValue = random.Next(0, cardPack.Pack.Count);
+                        playerHand.CopyCard(randomValue, cardPack.Pack);
+                        cardPack.RemoveCard(randomValue);
+                        cardInPack--;
+                    }
+                }
+            }
+            else
+            {
+                Console.WriteLine("Вы ввели не число!");
+            }
+        }
+    }
+
+    enum CardValue
+    {
+        туз,
+        король,
+        дама,
+        валет, 
+        десятка,
+        девятка,
+        восьмерка,
+        семерка,
+        шестерка
+    }
+
+    class Card
+    {
+        public CardValue CardValue { get; private set; }
+        public char CardSuit { get; private set; }
+
+        public Card (CardValue value, char suit)
+        {
+            CardSuit = suit;
+            CardValue = value;
+        }
+    }
+
+    class CardPack
+    {
+        public List<Card> Pack;
+
+        public CardPack ()
+        {
+            Pack = new List<Card>();
+        }
+
+        public void AddCard (int cardValue, char cardSuit)
+        {
+            Pack.Add(new Card((CardValue)cardValue, cardSuit));
+        }
+
+        public void CopyCard(int index, List<Card> firstPack)
+        {
+            Pack.Add(firstPack[index]);
+        }
+
+        public void RemoveCard (int index)
+        {
+            Pack.RemoveAt(index);
+        }
+
+        public void ShowCards ()
+        {
+            Console.WriteLine("Ваши карты:");
+            foreach (var card in Pack)
+            {
+                Console.WriteLine($"{card.CardValue} {card.CardSuit}");
+            }
+        }
+    }
+}
