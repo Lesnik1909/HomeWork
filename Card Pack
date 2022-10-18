@@ -6,7 +6,12 @@ namespace HomeWork3
     class Program
     {
         private const ConsoleColor RedCard = ConsoleColor.Red;
-        private const ConsoleColor BlackCard = ConsoleColor.DarkBlue;
+        private const ConsoleColor BlackCard = ConsoleColor.Blue;
+
+        private const string CommandTakeCards = "cards";
+        private const string CommandTakeOneCard = "one";
+        private const string CommandExit = "exit";
+
         static void Main(string[] args)
         {
             bool isWorking = true;
@@ -30,73 +35,71 @@ namespace HomeWork3
                     {
                         cardPack.AddCard(cardValue[j], cardSuit[i], RedCard);
                         cardInPack++;
-                    }                  
+                    }                   
                 }
-            }
-            
+            }            
+
             while (isWorking)
             {
                 Console.Clear();
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine($"1 - Показать карты игрока");
-                Console.WriteLine($"2 - Взять карту из колоды");
-                Console.WriteLine($"3 - Взять несколько карт из колоды");
-                Console.WriteLine($"4 - Показать карты в колоде");
-                Console.WriteLine($"5 - Выход");
-                Console.ResetColor();
+
+                Console.SetCursorPosition(0, 10);
+                Console.WriteLine($"{CommandTakeOneCard}   - Взять карту из колоды");
+                Console.WriteLine($"{CommandTakeCards} - Взять несколько карт из колоды");
+                Console.WriteLine($"{CommandExit}  - Выход");
+
+                playerHand.ShowCards(60, 0, "Ваши карты:");
+                cardPack.ShowCards(50, 0, "Колода:");
+
+                Console.SetCursorPosition(0, 0);
 
                 userInput = Console.ReadLine();
 
                 switch(userInput)
                 {
-                    case "1":                                                
-                        playerHand.ShowCards();
+                    case CommandTakeOneCard:
+                        TakeCard(ref cardInPack, cardPack, playerHand, true);
                         break;
-                    case "2":
-                        playerHand.CopyCard(1, cardPack.Pack);
+                    case CommandTakeCards:
+                        TakeCard(ref cardInPack, cardPack, playerHand, false);
                         break;
-                    case "3":
-                        TakeCard(ref cardInPack, cardPack, playerHand);
-                        break;
-                    case "4":
-                        cardPack.ShowCards();
-                        break;
-                    case "5":
+                    case CommandExit:
                         isWorking = false;
                         break;
                 }
-
-                Console.ReadKey();
             }
         }
         
-        static void TakeCard (ref int cardInPack, CardPack cardPack, CardPack playerHand)
+        static void TakeCard (ref int cardInPack, CardPack cardPack, CardPack playerHand, bool takeOne)
         {
             int randomValue;
+            int cardCounter;
             Random random = new Random();
 
-            Console.WriteLine("Сколько карт взять из колоды: ");
-            if (int.TryParse(Console.ReadLine(), out int cardCounter))
+            if(takeOne)
             {
-                if ((cardCounter > cardInPack) || (cardCounter < 0))
-                {
-                    Console.WriteLine("В колоде нет столько карт");
-                }
-                else
-                {
-                    for (int i = 0; i < cardCounter; i++)
-                    {
-                        randomValue = random.Next(0, cardPack.Pack.Count);
-                        playerHand.CopyCard(randomValue, cardPack.Pack);
-                        cardPack.RemoveCard(randomValue);
-                        cardInPack--;
-                    }
-                }
+                cardCounter = 1;
             }
             else
             {
-                Console.WriteLine("Вы ввели не число!");
+                Console.WriteLine("Сколько карт взять из колоды: ");
+                int.TryParse(Console.ReadLine(), out cardCounter);
             }
+
+            if ((cardCounter > cardInPack) || (cardCounter < 0))
+            {
+                Console.WriteLine("В колоде нет столько карт");
+            }
+            else
+            {
+                for (int i = 0; i < cardCounter; i++)
+                {
+                    randomValue = random.Next(0, cardPack.Pack.Count);
+                    playerHand.CopyCard(randomValue, cardPack.Pack);
+                    cardPack.RemoveCard(randomValue);
+                    cardInPack--;
+                }
+            }   
         }
     }
 
@@ -145,11 +148,13 @@ namespace HomeWork3
             Pack.RemoveAt(index);
         }
 
-        public void ShowCards ()
+        public void ShowCards (int positionX, int positionY, string text)
         {
-            Console.WriteLine("Ваши карты:");
+            Console.SetCursorPosition(positionX, positionY);
+            Console.WriteLine(text);
             foreach (var card in Pack)
             {
+                Console.SetCursorPosition(positionX, ++positionY);
                 card.ShowCard();
             }
         }
