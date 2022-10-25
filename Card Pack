@@ -5,8 +5,8 @@ namespace HomeWork3
 { 
     class Program
     {
-        private const ConsoleColor RedCard = ConsoleColor.Red;
-        private const ConsoleColor BlackCard = ConsoleColor.Blue;
+        private const ConsoleColor Red = ConsoleColor.Red;
+        private const ConsoleColor Black = ConsoleColor.Blue;
 
         private const string CommandTakeCards = "cards";
         private const string CommandTakeOneCard = "one";
@@ -15,29 +15,22 @@ namespace HomeWork3
         static void Main(string[] args)
         {
             bool isWorking = true;
-            int cardInPack = 0;
             string userInput;
-            char[] cardSuit = new char[] { '\u2663', '\u2660', '\u2665', '\u2666' };
-            string[] cardValue = new string[] { "T", "K", "D", "V", "10", "9", "8", "7", "6" };
+            char[] cardSuits = new char[] { '\u2663', '\u2660', '\u2665', '\u2666' };
+            ConsoleColor[] cardColors = new ConsoleColor[] { Black, Black, Red, Red };
+            string[] cardValues = new string[] { "T", "K", "D", "V", "10", "9", "8", "7", "6" };
             CardPack cardPack = new CardPack();
             CardPack playerHand = new CardPack();
 
-            for (int i = 0; i < cardSuit.Length; i++)
+            for (int i = 0; i < cardSuits.Length; i++)
             {
-                for (int j = 0; j < cardValue.Length; j++)
+                for (int j = 0; j < cardValues.Length; j++)
                 {
-                    if (i < 2)
-                    {
-                        cardPack.AddCard(cardValue[j], cardSuit[i], BlackCard);
-                        cardInPack++;
-                    }
-                    else
-                    {
-                        cardPack.AddCard(cardValue[j], cardSuit[i], RedCard);
-                        cardInPack++;
-                    }                   
+                    cardPack.AddCard(cardValues[j], cardSuits[i], cardColors[i]);              
                 }
-            }            
+            }
+
+            Croupier croupier = new Croupier(cardPack, playerHand);
 
             while (isWorking)
             {
@@ -58,10 +51,10 @@ namespace HomeWork3
                 switch(userInput)
                 {
                     case CommandTakeOneCard:
-                        TakeCard(ref cardInPack, cardPack, playerHand, true);
+                        croupier.TakeOneCard();
                         break;
                     case CommandTakeCards:
-                        TakeCard(ref cardInPack, cardPack, playerHand, false);
+                        croupier.TakeCards();
                         break;
                     case CommandExit:
                         isWorking = false;
@@ -69,64 +62,32 @@ namespace HomeWork3
                 }
             }
         }
-        
-        static void TakeCard (ref int cardInPack, CardPack cardPack, CardPack playerHand, bool takeOne)
-        {
-            int randomValue;
-            int cardCounter;
-            Random random = new Random();
-
-            if(takeOne)
-            {
-                cardCounter = 1;
-            }
-            else
-            {
-                Console.WriteLine("Сколько карт взять из колоды: ");
-                int.TryParse(Console.ReadLine(), out cardCounter);
-            }
-
-            if ((cardCounter > cardInPack) || (cardCounter < 0))
-            {
-                Console.WriteLine("В колоде нет столько карт");
-            }
-            else
-            {
-                for (int i = 0; i < cardCounter; i++)
-                {
-                    randomValue = random.Next(0, cardPack.Pack.Count);
-                    playerHand.CopyCard(randomValue, cardPack.Pack);
-                    cardPack.RemoveCard(randomValue);
-                    cardInPack--;
-                }
-            }   
-        }
     }
 
     class Card
     {
-        public string CardValue { get; private set; }
-        public char CardSuit { get; private set; }
-        public ConsoleColor CardColor { get; private set; }
+        public string Value { get; private set; }
+        public char Suit { get; private set; }
+        public ConsoleColor Color { get; private set; }
 
         public Card (string value, char suit, ConsoleColor color)
         {
-            CardSuit = suit;
-            CardValue = value;
-            CardColor = color;
+            Suit = suit;
+            Value = value;
+            Color = color;
         }
 
         public void ShowCard ()
         {
-            Console.ForegroundColor = CardColor;
-            Console.WriteLine($"{CardSuit}{CardValue}");
+            Console.ForegroundColor = Color;
+            Console.WriteLine($"{Suit}{Value}");
             Console.ResetColor();
         }
     }
 
     class CardPack
     {
-        public List<Card> Pack;
+        public List<Card> Pack { get; private set; }
 
         public CardPack ()
         {
@@ -148,6 +109,11 @@ namespace HomeWork3
             Pack.RemoveAt(index);
         }
 
+        public int CardInPack()
+        {
+            return Pack.Count;
+        }
+
         public void ShowCards (int positionX, int positionY, string text)
         {
             Console.SetCursorPosition(positionX, positionY);
@@ -156,6 +122,60 @@ namespace HomeWork3
             {
                 Console.SetCursorPosition(positionX, ++positionY);
                 card.ShowCard();
+            }
+        }
+    }
+
+    class Croupier
+    {
+        private CardPack _cardsPack;
+        private CardPack _playerHand;
+
+        public Croupier(CardPack pack, CardPack hand)
+        {
+            _cardsPack = pack;
+            _playerHand = hand;
+        }
+
+        public void TakeOneCard()
+        {
+            int randomValue;
+            Random random = new Random();
+
+            if (_cardsPack.CardInPack() > 0)
+            {
+                randomValue = random.Next(0, _cardsPack.CardInPack());
+                _playerHand.CopyCard(randomValue, _cardsPack.Pack);
+                _cardsPack.RemoveCard(randomValue);
+            }
+            else
+            {
+                Console.WriteLine("Колода пуста");
+                Console.ReadKey();
+            }
+        }
+
+        public void TakeCards()
+        {
+            int randomValue;
+            Random random = new Random();
+
+            Console.WriteLine("Сколько карт взять из колоды: ");
+            int.TryParse(Console.ReadLine(), out int cardCounter);
+
+            if ((cardCounter > _cardsPack.CardInPack()) || (cardCounter < 0))
+            {
+                Console.WriteLine("В колоде нет столько карт");
+                Console.ReadKey();
+            }
+            else
+            {
+                for (int i = 0; i < cardCounter; i++)
+                {
+                    randomValue = random.Next(0, _cardsPack.CardInPack());
+                    _playerHand.CopyCard(randomValue, _cardsPack.Pack);
+                    _cardsPack.RemoveCard(randomValue);
+                }
             }
         }
     }
