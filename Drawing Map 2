@@ -4,10 +4,10 @@ namespace HomeWork3
 {
     class Program
     {
-        private const ConsoleKey _up = ConsoleKey.UpArrow;
-        private const ConsoleKey _down = ConsoleKey.DownArrow;
-        private const ConsoleKey _left = ConsoleKey.LeftArrow;
-        private const ConsoleKey _right = ConsoleKey.RightArrow;
+        private const ConsoleKey Up = ConsoleKey.UpArrow;
+        private const ConsoleKey Down = ConsoleKey.DownArrow;
+        private const ConsoleKey Left = ConsoleKey.LeftArrow;
+        private const ConsoleKey Right = ConsoleKey.RightArrow;
 
         static void Main(string[] args)
         {
@@ -30,6 +30,7 @@ namespace HomeWork3
             int userPositionX = 9;
             int userPositionY = 9;
             char graundSymbol = ' ';
+            char plaerSymbol = '\u0002';
             char treasureSymbol = 'X';
             char wallSymbol = '#';
             int collectedTreasures = 0;
@@ -39,31 +40,9 @@ namespace HomeWork3
             {
                 DrawBag(collectedTreasures, allTreasures);
                 DrawMap(map);
-                DrawPlaer(userPositionX, userPositionY);
-
-                ConsoleKey userInput = Console.ReadKey().Key;
-
-                switch (userInput)
-                {
-                    case _up:
-                        MovePlayer(ref userPositionX, ref userPositionY, -1, 0, map, wallSymbol);
-                        break;
-                    case _down:
-                        MovePlayer(ref userPositionX, ref userPositionY, 1, 0, map, wallSymbol);
-                        break;
-                    case _left:
-                        MovePlayer(ref userPositionX, ref userPositionY, 0, -1, map, wallSymbol);
-                        break;
-                    case _right:
-                        MovePlayer(ref userPositionX, ref userPositionY, 0, 1, map, wallSymbol);
-                        break;
-                }
-
-                if (map[userPositionX, userPositionY] == treasureSymbol)
-                {
-                    map[userPositionX, userPositionY] = graundSymbol;
-                    collectedTreasures++;
-                }
+                DrawPlaer(userPositionX, userPositionY, plaerSymbol);
+                ChoiceOfDirection(ref userPositionX, ref userPositionY, map, wallSymbol);
+                TakeTreasure(userPositionX, userPositionY, ref collectedTreasures, treasureSymbol, graundSymbol, map);
 
                 Console.Clear();
             }
@@ -86,10 +65,8 @@ namespace HomeWork3
             }
         }
 
-        static void DrawPlaer(int userPositionX, int userPositionY)
-        {
-            char plaerSymbol = '\u0002';
-
+        static void DrawPlaer(int userPositionX, int userPositionY, char plaerSymbol)
+        {          
             Console.SetCursorPosition(userPositionY, userPositionX);
             Console.Write(plaerSymbol);
         }
@@ -100,13 +77,43 @@ namespace HomeWork3
             Console.WriteLine($"Собранные сокровища {countItem}/{maxItem}");
         }
 
-        static void MovePlayer (ref int userPositionX, ref int userPositionY, int deltaPositionX, int deltaPositionY, char[,] map, char wallSymbol)
-        {            
+        static void MovePlayer(ref int userPositionX, ref int userPositionY, int deltaPositionX, int deltaPositionY, char[,] map, char wallSymbol)
+        {
             if (map[userPositionX + deltaPositionX, userPositionY + deltaPositionY] != wallSymbol)
             {
                 userPositionX += deltaPositionX;
                 userPositionY += deltaPositionY;
-            }                    
+            }
+        }
+
+        static void TakeTreasure(int userPositionX, int userPositionY, ref int collectedTreasures, char treasureSymbol, char graundSymbol, char[,] map)
+        {
+            if (map[userPositionX, userPositionY] == treasureSymbol)
+            {
+                map[userPositionX, userPositionY] = graundSymbol;
+                collectedTreasures++;
+            }
+        }
+
+        static void ChoiceOfDirection(ref int userPositionX, ref int userPositionY, char[,] map, char wallSymbol)
+        {
+            ConsoleKey userInput = Console.ReadKey().Key;
+
+            switch (userInput)
+            {
+                case Up:
+                    MovePlayer(ref userPositionX, ref userPositionY, -1, 0, map, wallSymbol);
+                    break;
+                case Down:
+                    MovePlayer(ref userPositionX, ref userPositionY, 1, 0, map, wallSymbol);
+                    break;
+                case Left:
+                    MovePlayer(ref userPositionX, ref userPositionY, 0, -1, map, wallSymbol);
+                    break;
+                case Right:
+                    MovePlayer(ref userPositionX, ref userPositionY, 0, 1, map, wallSymbol);
+                    break;
+            }
         }
     }
 }
