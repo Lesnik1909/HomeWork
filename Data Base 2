@@ -1,167 +1,173 @@
 using System;
 using System.Collections.Generic;
 
-namespace HomeWork3
+internal class Program
 {
-    class Program
+    private const string CommandShowAllElement = "show";
+    private const string CommandAddElement = "add";
+    private const string CommandRemoveElement = "rem";
+    private const string CommandChangeStatus = "ban";
+    private const string CommandExit = "exit";
+
+    private static void Main(string[] args)
     {
-        private const string _comandShowAllElement = "show";
-        private const string _commandAddElement = "add";
-        private const string _commandRemoveElement = "rem";
-        private const string _commandChangeStatus = "ban";
-        private const string _commandExit = "exit";
-        static void Main(string[] args)
+        string userInput;
+        bool isWorking = true;
+        DataBase mybase = new DataBase();
+
+        while (isWorking)
         {
-            int idCounter = 0;
-            string userInput;
-            bool isWorking = true;
-            DataBase players = new DataBase();
-            Dictionary<int, Player> dataBase = new Dictionary<int, Player>();
+            Console.Clear();
+            Console.WriteLine($"{CommandShowAllElement} - Вывод всей базы");
+            Console.WriteLine($"{CommandAddElement} - Добавлние нового игрока");
+            Console.WriteLine($"{CommandRemoveElement} - Удаление игрока по ID");
+            Console.WriteLine($"{CommandChangeStatus} - Изменение статуса игрока по ID");
+            Console.WriteLine($"{CommandExit} - Выход из программы");
+            Console.Write("Выберите пункт меню ");
+            userInput = Console.ReadLine();
 
-            players.AddPlayer(ref idCounter);
-
-            while (isWorking)
+            switch (userInput)
             {
-                Console.Clear();
-                Console.WriteLine($"{_comandShowAllElement} - Вывод всей базы");
-                Console.WriteLine($"{_commandAddElement} - Добавлние нового игрока");
-                Console.WriteLine($"{_commandRemoveElement} - Удаление игрока по ID");
-                Console.WriteLine($"{_commandChangeStatus} - Изменение статуса игрока по ID");
-                Console.WriteLine($"{_commandExit} - Выход из программы");
-                Console.Write("Выберите пункт меню ");
-                userInput = Console.ReadLine();
-
-                switch (userInput)
-                {
-                    case _comandShowAllElement:
-                        ShowAllBase(dataBase);
-                        break;
-                    case _commandAddElement:
-                        AddNewPlayer(dataBase, ref idCounter);
-                        break;
-                    case _commandRemoveElement:
-                        RemovePlayer(dataBase);
-                        break;
-                    case _commandChangeStatus:
-                        ChangeStatusPlayer(dataBase);
-                        break;
-                    case _commandExit:
-                        isWorking = false;
-                        break;
-                }
+                case CommandShowAllElement:
+                    mybase.ShowInfo();
+                    break;
+                case CommandAddElement:
+                    mybase.AddPlayer();
+                    break;
+                case CommandRemoveElement:
+                    mybase.RemovePlayer();
+                    break;
+                case CommandChangeStatus:
+                    mybase.ChangeStatusPlayer();
+                    break;
+                case CommandExit:
+                    isWorking = false;
+                    break;
             }
-        }
-
-        static void ShowAllBase(Dictionary<int, Player> dataBase)
-        {
-            foreach (var player in dataBase)
-            {
-                Console.WriteLine($"{player.Key} {player.Value.Name} {player.Value.Level} уровня {player.Value.ShowBannedStatus()}");
-                player.Value.ShowBannedStatus();
-            }
-            Console.ReadKey();
-        }
-
-        static void AddNewPlayer(Dictionary<int, Player> dataBase, ref int idCounter)
-        {
-            Console.Write("Введите имя нового игрока: ");
-            string userName = Console.ReadLine();
-            Console.Write($"Введите уровень игрока {userName}: ");
-            int.TryParse(Console.ReadLine(), out int userLevel);
-            idCounter++;
-            dataBase.Add(idCounter, new Player(userName, userLevel));
-        }
-
-        static void RemovePlayer(Dictionary<int, Player> dataBase)
-        {
-            Console.Write("Введите ID игрока: ");
-            int.TryParse(Console.ReadLine(), out int idChangePlayer);
-
-            if (dataBase.ContainsKey(idChangePlayer))
-            {
-                Console.WriteLine($"Игрока {dataBase[idChangePlayer].Name} удален");
-                dataBase.Remove(idChangePlayer);
-            }
-            else
-            {
-                Console.WriteLine("Игрока с таким ID не существует");
-            }
-
-            Console.ReadKey();
-        }
-
-        static void ChangeStatusPlayer(Dictionary<int, Player> dataBase)
-        {
-            Console.Write("Введите ID игрока: ");
-            int.TryParse(Console.ReadLine(), out int idChangePlayer);
-
-            if (dataBase.ContainsKey(idChangePlayer))
-            {
-                //dataBase[idChangePlayer].ChangeBannedStatus();
-                Console.WriteLine($"Статус игрока {dataBase[idChangePlayer].Name} изменен на {dataBase[idChangePlayer].ShowBannedStatus()}");
-            }
-            else
-            {
-                Console.WriteLine("Игрока с таким ID не существует");
-            }
-
-            Console.ReadKey();
         }
     }
+}
 
-    class DataBase
+class Player
+{
+    public int Level { get; private set; }
+    public string Name { get; private set; }
+    public bool IsBanned { get; private set; }
+
+    public Player (string name, int level)
     {
-        private Dictionary<int, Player> _players;
-
-        public DataBase ()
-        {
-            _players = new Dictionary<int, Player>();
-        }
-
-        public void AddPlayer (ref int idCounter)
-        {
-            Console.Write("Введите имя нового игрока: ");
-            string userName = Console.ReadLine();
-            Console.Write($"Введите уровень игрока {userName}: ");
-            int.TryParse(Console.ReadLine(), out int userLevel);
-            idCounter++;
-            _players.Add(idCounter, new Player(userName, userLevel));
-        }
+        Name = name;
+        Level = level;
+        IsBanned = false;
     }
 
-    class Player
+    public void UnbanPlayer()
     {
-        public string Name { get; private set; }
-        public int Level { get; private set; }
-        public bool IsBanned { get; private set; }
+        IsBanned = false;
+    }
 
-        public Player(string name, int level)
+    public void BanPlayer()
+    {
+        IsBanned = true;
+    }
+
+    public string ShowBannedStatus()
+    {
+        string text = "Не забанен";
+
+        if (IsBanned == true)
         {
-            Name = name;
-            Level = level;
-            IsBanned = false;
+            text = "Забанен";
         }
 
-        public void UnbanPlayer()
-        {                         
-            IsBanned = false;            
+        return text;
+    }
+}
+
+class DataBase
+{
+    private const string CommandBanned = "ban";
+    private const string CommandUnbanned = "unb";
+
+    static int IDs = 0;
+    private Dictionary<int, Player> _persons;
+
+    public DataBase ()
+    {
+        _persons = new Dictionary<int, Player>();
+    }
+
+    public void AddPlayer ()
+    {
+        Console.Write("Введите имя нового игрока: ");
+        string userName = Console.ReadLine();
+        Console.Write($"Введите уровень игрока {userName}: ");
+
+        if (int.TryParse(Console.ReadLine(), out int userLevel) == false)
+        {
+            userLevel = 1;
         }
 
-        public void BanPlayer()
+        _persons.Add(++IDs, new Player(userName, userLevel));
+    }
+
+    public void RemovePlayer()
+    {
+        Console.Write("Введите ID игрока: ");
+        int.TryParse(Console.ReadLine(), out int idChangePlayer);
+
+        if (_persons.ContainsKey(idChangePlayer))
         {
-                IsBanned = true;
+            Console.WriteLine($"Игрока {_persons[idChangePlayer].Name} удален");
+            _persons.Remove(idChangePlayer);
+        }
+        else
+        {
+            Console.WriteLine("Игрока с таким ID не существует");
         }
 
-        public string ShowBannedStatus()
-        {
-            string text = "Не забанен";
+        Console.ReadKey();
+    }
 
-            if (IsBanned == true)
+    public void ShowInfo()
+    {
+        foreach (var element in _persons)
+        {
+            Console.WriteLine($"{element.Key} {element.Value.Name} {element.Value.Level} {element.Value.ShowBannedStatus()}");            
+        }
+        
+        Console.ReadKey();
+    }
+
+    public void ChangeStatusPlayer()
+    {
+        Console.Write("Введите ID игрока: ");
+        int.TryParse(Console.ReadLine(), out int idChangePlayer);
+
+        if (_persons.ContainsKey(idChangePlayer))
+        {
+            Console.WriteLine($"{CommandBanned} - Забанить");
+            Console.WriteLine($"{CommandUnbanned} - Разбанить");
+            Console.Write("Выберите пункт меню ");
+            string userInput = Console.ReadLine();
+
+            switch (userInput)
             {
-                text = "Забанен";
+                case CommandBanned:
+                    _persons[idChangePlayer].BanPlayer();
+                    break;
+                case CommandUnbanned:
+                    _persons[idChangePlayer].UnbanPlayer();
+                    break;
             }
-
-            return text;
+            
+            Console.WriteLine($"Статус игрока {_persons[idChangePlayer].Name} изменен на {_persons[idChangePlayer].ShowBannedStatus()}");
         }
+        else
+        {
+            Console.WriteLine("Игрока с таким ID не существует");
+        }
+
+        Console.ReadKey();
     }
 }
