@@ -1,0 +1,256 @@
+using System;
+using System.Collections.Generic;
+
+namespace HomeWork3
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            BookStorage librari = new BookStorage();
+            librari.Work();
+        }
+    }
+
+    class Book
+    {
+        public string Name { get; private set; }
+        public string Autor { get; private set; }
+        public string Genre { get; private set; }
+        public int YearOfIssue { get; private set; }
+
+        public Book (string name, string autor, string genre, int year)
+        {
+            Name = name;
+            Autor = autor;
+            Genre = genre;
+            YearOfIssue = year;
+        }
+
+        public void ShowBook ()
+        {
+            Console.WriteLine($"Книга: '{Name}', написана в {YearOfIssue} году.\nАвтор: {Autor}. Жанр книги: {Genre}");
+        }
+    }
+
+    class BookStorage
+    {
+        private const string CommandShowAllBooks = "show";
+        private const string CommandAddBook = "add";
+        private const string CommandRemoveBook = "rem";
+        private const string CommandSearchBooks = "see";
+        private const string CommandExit = "exit";
+        private const string CommandName = "name";
+        private const string CommandAutor = "autor";
+        private const string CommandGener = "gener";
+        private const string CommandYear = "year";
+
+        private List<Book> _library;
+        private bool _isWorking;
+
+        public BookStorage()
+        {
+            _library = new List<Book>();
+            _isWorking = true;
+        }
+
+        private void AddBook ()
+        {
+            string name;
+            string autor;
+            string gener;
+
+            Console.Write("Введите название книги: ");
+            name = Console.ReadLine();
+            Console.Write("Введите имя автора: ");
+            autor = Console.ReadLine();
+            Console.Write("Введите жанр: ");
+            gener = Console.ReadLine();
+            Console.Write("Введите год написания книги: ");
+            int.TryParse(Console.ReadLine(), out int year);
+            _library.Add(new Book(name, autor, gener, year));
+        }
+
+        private void RemoveBook()
+        {
+            string enterName;
+            string enterAutor;
+            int removePosition = -1;
+
+            Console.Write("Введите название книги: ");
+            enterName = Console.ReadLine();
+            Console.Write("Введите автора: ");
+            enterAutor = Console.ReadLine();
+
+            foreach (var book in _library)
+            {
+                if ((book.Name == enterName) && (book.Autor == enterAutor))
+                {
+                    removePosition = _library.IndexOf(book);                    
+                }
+            }
+
+            if (removePosition >= 0)
+            {
+                _library.RemoveAt(removePosition);
+            }
+        }
+
+        private bool NameSearch()
+        {
+            bool isSuccess = false;
+            Console.WriteLine("Введите название книги для поиска: ");
+            string userSearch = Console.ReadLine();
+
+            foreach (var book in _library)
+            {
+                if (book.Name == userSearch)
+                {
+                    book.ShowBook();
+                    isSuccess = true;
+                }
+            }
+
+            return isSuccess;
+        }
+
+        private bool AutorSearch()
+        {
+            bool isSuccess = false;
+            Console.WriteLine("Введите имя автора книги для поиска: ");
+            string userSearch = Console.ReadLine();
+
+            foreach (var book in _library)
+            {
+                if (book.Autor == userSearch)
+                {
+                    book.ShowBook();
+                    isSuccess = true;
+                }
+            }
+
+            return isSuccess;
+        }
+
+        private bool GenerSearch()
+        {
+            bool isSuccess = false;
+            Console.WriteLine("Введите жанр книги для поиска: ");
+            string userSearch = Console.ReadLine();
+
+            foreach (var book in _library)
+            {
+                if (book.Genre == userSearch)
+                {
+                    book.ShowBook();
+                    isSuccess = true;
+                }
+            }
+
+            return isSuccess;
+        }
+
+        private bool YearSearch()
+        {
+            bool isSuccess = false;
+            Console.WriteLine("Введите год выпуска книги для поиска: ");
+
+            int.TryParse(Console.ReadLine(), out int userSearch);
+
+            foreach (var book in _library)
+            {
+                if (book.YearOfIssue == userSearch)
+                {
+                    book.ShowBook();
+                    isSuccess = true;
+                }
+            }
+
+            return isSuccess;
+        }
+
+        private void SearchBook()
+        {
+            string userInput;
+            bool isSuccess = false;
+            Console.Clear();
+            Console.WriteLine("По какому признаку будем искать:");
+            Console.WriteLine($"{CommandName} - по названию");
+            Console.WriteLine($"{CommandAutor} - по автору");
+            Console.WriteLine($"{CommandGener} - по жанру");
+            Console.WriteLine($"{CommandYear} - по году");
+            userInput = Console.ReadLine();
+
+            switch (userInput)
+            {
+                case CommandName:
+                    isSuccess = NameSearch();
+                    break;
+                case CommandAutor:
+                    isSuccess = AutorSearch();
+                    break;
+                case CommandGener:
+                    isSuccess = GenerSearch();
+                    break;
+                case CommandYear:
+                    isSuccess = YearSearch();
+                    break;
+            }
+
+            if (isSuccess == false)
+            {
+                Console.WriteLine("Совпадений нет!");
+            }
+
+            Console.ReadKey();
+        }
+
+        private void ShowBooks()
+        {
+            foreach (var book in _library)
+            {
+                book.ShowBook();
+            }
+
+            Console.ReadKey();
+        }
+
+        public void Work ()
+        {
+            string userInput;
+
+            while (_isWorking)
+            {
+                Console.Clear();
+                Console.WriteLine($"{CommandShowAllBooks} - Показать книги");
+                Console.WriteLine($"{CommandAddBook} - Добавить книгу");
+                Console.WriteLine($"{CommandRemoveBook} - Удалить книгу");
+                Console.WriteLine($"{CommandSearchBooks} - Поиск книг по параметру");
+                Console.WriteLine($"{CommandExit} - Выход из программы");
+
+                userInput = Console.ReadLine();
+                switch (userInput)
+                {
+                    case CommandShowAllBooks:
+                        ShowBooks();
+                        break;
+                    case CommandAddBook:
+                        AddBook();
+                        break;
+                    case CommandRemoveBook:
+                        RemoveBook();
+                        break;
+                    case CommandSearchBooks:
+                        SearchBook();
+                        break;
+                    case CommandExit:
+                        _isWorking = false;
+                        break;
+                    default:
+                        Console.WriteLine("Чёт какая-то ерунда!");
+                        break;
+                }
+            }
+        }
+    }
+}
