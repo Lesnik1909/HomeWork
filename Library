@@ -54,6 +54,44 @@ namespace HomeWork3
             _isWorking = true;
         }
 
+        public void Work()
+        {
+            string userInput;
+
+            while (_isWorking)
+            {
+                Console.Clear();
+                Console.WriteLine($"{CommandShowAllBooks} - Показать книги");
+                Console.WriteLine($"{CommandAddBook} - Добавить книгу");
+                Console.WriteLine($"{CommandRemoveBook} - Удалить книгу");
+                Console.WriteLine($"{CommandSearchBooks} - Поиск книг по параметру");
+                Console.WriteLine($"{CommandExit} - Выход из программы");
+
+                userInput = Console.ReadLine();
+                switch (userInput)
+                {
+                    case CommandShowAllBooks:
+                        ShowBooks();
+                        break;
+                    case CommandAddBook:
+                        AddBook();
+                        break;
+                    case CommandRemoveBook:
+                        RemoveBook();
+                        break;
+                    case CommandSearchBooks:
+                        SearchBook();
+                        break;
+                    case CommandExit:
+                        _isWorking = false;
+                        break;
+                    default:
+                        Console.WriteLine("Чёт какая-то ерунда!");
+                        break;
+                }
+            }
+        }
+
         private void AddBook ()
         {
             string name;
@@ -96,10 +134,10 @@ namespace HomeWork3
             }
         }
 
-        private bool NameSearch()
+        private bool IsFoundByName()
         {
             bool isSuccess = false;
-            Console.WriteLine("Введите название книги для поиска: ");
+            Console.Write("Введите название книги для поиска: ");
             string userSearch = Console.ReadLine();
 
             foreach (var book in _library)
@@ -114,10 +152,10 @@ namespace HomeWork3
             return isSuccess;
         }
 
-        private bool AutorSearch()
+        private bool IsFoundByAuthor()
         {
             bool isSuccess = false;
-            Console.WriteLine("Введите имя автора книги для поиска: ");
+            Console.Write("Введите имя автора книги для поиска: ");
             string userSearch = Console.ReadLine();
 
             foreach (var book in _library)
@@ -132,10 +170,10 @@ namespace HomeWork3
             return isSuccess;
         }
 
-        private bool GenerSearch()
+        private bool IsFoundByGenre()
         {
             bool isSuccess = false;
-            Console.WriteLine("Введите жанр книги для поиска: ");
+            Console.Write("Введите жанр книги для поиска: ");
             string userSearch = Console.ReadLine();
 
             foreach (var book in _library)
@@ -150,10 +188,10 @@ namespace HomeWork3
             return isSuccess;
         }
 
-        private bool YearSearch()
+        private bool IsFoundByYear()
         {
             bool isSuccess = false;
-            Console.WriteLine("Введите год выпуска книги для поиска: ");
+            Console.Write("Введите год выпуска книги для поиска: ");
 
             int.TryParse(Console.ReadLine(), out int userSearch);
 
@@ -184,16 +222,16 @@ namespace HomeWork3
             switch (userInput)
             {
                 case CommandName:
-                    isSuccess = NameSearch();
+                    isSuccess = IsFoundByName();
                     break;
                 case CommandAutor:
-                    isSuccess = AutorSearch();
+                    isSuccess = IsFoundByAuthor();
                     break;
                 case CommandGener:
-                    isSuccess = GenerSearch();
+                    isSuccess = IsFoundByGenre();
                     break;
                 case CommandYear:
-                    isSuccess = YearSearch();
+                    isSuccess = IsFoundByYear();
                     break;
             }
 
@@ -213,44 +251,6 @@ namespace HomeWork3
             }
 
             Console.ReadKey();
-        }
-
-        public void Work ()
-        {
-            string userInput;
-
-            while (_isWorking)
-            {
-                Console.Clear();
-                Console.WriteLine($"{CommandShowAllBooks} - Показать книги");
-                Console.WriteLine($"{CommandAddBook} - Добавить книгу");
-                Console.WriteLine($"{CommandRemoveBook} - Удалить книгу");
-                Console.WriteLine($"{CommandSearchBooks} - Поиск книг по параметру");
-                Console.WriteLine($"{CommandExit} - Выход из программы");
-
-                userInput = Console.ReadLine();
-                switch (userInput)
-                {
-                    case CommandShowAllBooks:
-                        ShowBooks();
-                        break;
-                    case CommandAddBook:
-                        AddBook();
-                        break;
-                    case CommandRemoveBook:
-                        RemoveBook();
-                        break;
-                    case CommandSearchBooks:
-                        SearchBook();
-                        break;
-                    case CommandExit:
-                        _isWorking = false;
-                        break;
-                    default:
-                        Console.WriteLine("Чёт какая-то ерунда!");
-                        break;
-                }
-            }
         }
     }
 }
