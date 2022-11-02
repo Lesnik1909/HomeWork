@@ -7,8 +7,8 @@ namespace HomeWork3
     {
         static void Main(string[] args)
         {
-            BookStorage librari = new BookStorage();
-            librari.Work();
+            BookStorage library = new BookStorage();
+            library.Work();
         }
     }
 
@@ -19,7 +19,7 @@ namespace HomeWork3
         public string Genre { get; private set; }
         public int YearOfIssue { get; private set; }
 
-        public Book (string name, string autor, string genre, int year)
+        public Book(string name, string autor, string genre, int year)
         {
             Name = name;
             Autor = autor;
@@ -27,7 +27,7 @@ namespace HomeWork3
             YearOfIssue = year;
         }
 
-        public void ShowBook ()
+        public void ShowInfo()
         {
             Console.WriteLine($"Книга: '{Name}', написана в {YearOfIssue} году.\nАвтор: {Autor}. Жанр книги: {Genre}");
         }
@@ -92,7 +92,7 @@ namespace HomeWork3
             }
         }
 
-        private void AddBook ()
+        private void AddBook()
         {
             string name;
             string autor;
@@ -122,9 +122,9 @@ namespace HomeWork3
 
             foreach (var book in _library)
             {
-                if ((book.Name == enterName) && (book.Autor == enterAutor))
+                if (book.Name == enterName && book.Autor == enterAutor)
                 {
-                    removePosition = _library.IndexOf(book);                    
+                    removePosition = _library.IndexOf(book);
                 }
             }
 
@@ -144,7 +144,7 @@ namespace HomeWork3
             {
                 if (book.Name == userSearch)
                 {
-                    book.ShowBook();
+                    book.ShowInfo();
                     isSuccess = true;
                 }
             }
@@ -162,7 +162,7 @@ namespace HomeWork3
             {
                 if (book.Autor == userSearch)
                 {
-                    book.ShowBook();
+                    book.ShowInfo();
                     isSuccess = true;
                 }
             }
@@ -180,7 +180,7 @@ namespace HomeWork3
             {
                 if (book.Genre == userSearch)
                 {
-                    book.ShowBook();
+                    book.ShowInfo();
                     isSuccess = true;
                 }
             }
@@ -199,7 +199,7 @@ namespace HomeWork3
             {
                 if (book.YearOfIssue == userSearch)
                 {
-                    book.ShowBook();
+                    book.ShowInfo();
                     isSuccess = true;
                 }
             }
@@ -247,7 +247,7 @@ namespace HomeWork3
         {
             foreach (var book in _library)
             {
-                book.ShowBook();
+                book.ShowInfo();
             }
 
             Console.ReadKey();
