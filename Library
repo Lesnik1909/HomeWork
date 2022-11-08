@@ -29,7 +29,7 @@ namespace HomeWork3
 
         public void ShowInfo()
         {
-            Console.WriteLine($"Книга: '{Name}', написана в {YearOfIssue} году.\nАвтор: {Autor}. Жанр книги: {Genre}");
+            Console.WriteLine($"Книга: '{Name}', написана в {YearOfIssue} году.\n  Автор: {Autor}. Жанр книги: {Genre}");
         }
     }
 
@@ -45,12 +45,14 @@ namespace HomeWork3
         private const string CommandGener = "gener";
         private const string CommandYear = "year";
 
-        private List<Book> _library;
+        static int PlayerIdCounter = 0;
+
+        private Dictionary<int, Book> _bookStorage;
         private bool _isWorking;
 
         public BookStorage()
         {
-            _library = new List<Book>();
+            _bookStorage = new Dictionary<int, Book>();
             _isWorking = true;
         }
 
@@ -80,7 +82,7 @@ namespace HomeWork3
                         RemoveBook();
                         break;
                     case CommandSearchBooks:
-                        SearchBook();
+                        SearchBooks();
                         break;
                     case CommandExit:
                         _isWorking = false;
@@ -106,45 +108,52 @@ namespace HomeWork3
             gener = Console.ReadLine();
             Console.Write("Введите год написания книги: ");
             int.TryParse(Console.ReadLine(), out int year);
-            _library.Add(new Book(name, autor, gener, year));
+            _bookStorage.Add(++PlayerIdCounter, new Book(name, autor, gener, year)); 
+        }
+
+        private int GettingId()
+        {
+            int nonExistentId = 0;
+
+            Console.Write("Введите ID книги: ");
+            int.TryParse(Console.ReadLine(), out int changePlayerId);
+
+            if (_bookStorage.ContainsKey(changePlayerId))
+            {
+                return changePlayerId;
+            }
+            else
+            {
+                Console.WriteLine("Книги с таким ID не существует");
+                return nonExistentId;
+                Console.ReadKey();
+            }
         }
 
         private void RemoveBook()
         {
-            string enterName;
-            string enterAutor;
-            int removePosition = -1;
+            int changePlayerId = GettingId();
 
-            Console.Write("Введите название книги: ");
-            enterName = Console.ReadLine();
-            Console.Write("Введите автора: ");
-            enterAutor = Console.ReadLine();
-
-            foreach (var book in _library)
+            if (changePlayerId > 0)
             {
-                if (book.Name == enterName && book.Autor == enterAutor)
-                {
-                    removePosition = _library.IndexOf(book);
-                }
+                Console.WriteLine($"Книга удалена");
+                _bookStorage.Remove(changePlayerId);
             }
 
-            if (removePosition >= 0)
-            {
-                _library.RemoveAt(removePosition);
-            }
+            Console.ReadKey();
         }
 
-        private bool IsFoundByName()
+        private bool FoundByName()
         {
             bool isSuccess = false;
             Console.Write("Введите название книги для поиска: ");
             string userSearch = Console.ReadLine();
 
-            foreach (var book in _library)
+            foreach (var book in _bookStorage)
             {
-                if (book.Name == userSearch)
+                if (book.Value.Name == userSearch)
                 {
-                    book.ShowInfo();
+                    book.Value.ShowInfo();
                     isSuccess = true;
                 }
             }
@@ -152,17 +161,17 @@ namespace HomeWork3
             return isSuccess;
         }
 
-        private bool IsFoundByAuthor()
+        private bool FoundByAuthor()
         {
             bool isSuccess = false;
             Console.Write("Введите имя автора книги для поиска: ");
             string userSearch = Console.ReadLine();
 
-            foreach (var book in _library)
+            foreach (var book in _bookStorage)
             {
-                if (book.Autor == userSearch)
+                if (book.Value.Autor == userSearch)
                 {
-                    book.ShowInfo();
+                    book.Value.ShowInfo();
                     isSuccess = true;
                 }
             }
@@ -170,17 +179,17 @@ namespace HomeWork3
             return isSuccess;
         }
 
-        private bool IsFoundByGenre()
+        private bool FoundByGenre()
         {
             bool isSuccess = false;
             Console.Write("Введите жанр книги для поиска: ");
             string userSearch = Console.ReadLine();
 
-            foreach (var book in _library)
+            foreach (var book in _bookStorage)
             {
-                if (book.Genre == userSearch)
+                if (book.Value.Genre == userSearch)
                 {
-                    book.ShowInfo();
+                    book.Value.ShowInfo();
                     isSuccess = true;
                 }
             }
@@ -188,18 +197,18 @@ namespace HomeWork3
             return isSuccess;
         }
 
-        private bool IsFoundByYear()
+        private bool FoundByYear()
         {
             bool isSuccess = false;
             Console.Write("Введите год выпуска книги для поиска: ");
 
             int.TryParse(Console.ReadLine(), out int userSearch);
 
-            foreach (var book in _library)
+            foreach (var book in _bookStorage)
             {
-                if (book.YearOfIssue == userSearch)
+                if (book.Value.YearOfIssue == userSearch)
                 {
-                    book.ShowInfo();
+                    book.Value.ShowInfo();
                     isSuccess = true;
                 }
             }
@@ -207,7 +216,7 @@ namespace HomeWork3
             return isSuccess;
         }
 
-        private void SearchBook()
+        private void SearchBooks()
         {
             string userInput;
             bool isSuccess = false;
@@ -222,16 +231,16 @@ namespace HomeWork3
             switch (userInput)
             {
                 case CommandName:
-                    isSuccess = IsFoundByName();
+                    isSuccess = FoundByName();
                     break;
                 case CommandAutor:
-                    isSuccess = IsFoundByAuthor();
+                    isSuccess = FoundByAuthor();
                     break;
                 case CommandGener:
-                    isSuccess = IsFoundByGenre();
+                    isSuccess = FoundByGenre();
                     break;
                 case CommandYear:
-                    isSuccess = IsFoundByYear();
+                    isSuccess = FoundByYear();
                     break;
             }
 
@@ -245,9 +254,10 @@ namespace HomeWork3
 
         private void ShowBooks()
         {
-            foreach (var book in _library)
+            foreach (var book in _bookStorage)
             {
-                book.ShowInfo();
+                Console.Write($"{book.Key} ");
+                book.Value.ShowInfo();
             }
 
             Console.ReadKey();
