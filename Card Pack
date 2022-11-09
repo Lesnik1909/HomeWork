@@ -2,31 +2,35 @@ using System;
 using System.Collections.Generic;
 
 namespace HomeWork3
-{ 
+{
     class Program
     {
         private const ConsoleColor Red = ConsoleColor.Red;
         private const ConsoleColor Black = ConsoleColor.Blue;
 
         private const string CommandTakeCards = "cards";
-        private const string CommandTakeOneCard = "one";
+        private const string CommandTakeCard = "one";
         private const string CommandExit = "exit";
 
         static void Main(string[] args)
         {
             bool isWorking = true;
             string userInput;
-            char[] cardSuits = new char[] { '\u2663', '\u2660', '\u2665', '\u2666' };
-            ConsoleColor[] cardColors = new ConsoleColor[] { Black, Black, Red, Red };
+            Dictionary<char, ConsoleColor> suits = new Dictionary<char, ConsoleColor>();
             string[] cardValues = new string[] { "T", "K", "D", "V", "10", "9", "8", "7", "6" };
             CardPack cardPack = new CardPack();
             CardPack playerHand = new CardPack();
 
-            for (int i = 0; i < cardSuits.Length; i++)
+            suits.Add('\u2663', Black);
+            suits.Add('\u2660', Black);
+            suits.Add('\u2665', Red);
+            suits.Add('\u2666', Red);
+
+            foreach (var suit in suits)
             {
                 for (int j = 0; j < cardValues.Length; j++)
                 {
-                    cardPack.AddCard(cardValues[j], cardSuits[i], cardColors[i]);              
+                    cardPack.AddCard(cardValues[j], suit.Key, suit.Value);
                 }
             }
 
@@ -37,7 +41,7 @@ namespace HomeWork3
                 Console.Clear();
 
                 Console.SetCursorPosition(0, 10);
-                Console.WriteLine($"{CommandTakeOneCard}   - Взять карту из колоды");
+                Console.WriteLine($"{CommandTakeCard}   - Взять карту из колоды");
                 Console.WriteLine($"{CommandTakeCards} - Взять несколько карт из колоды");
                 Console.WriteLine($"{CommandExit}  - Выход");
 
@@ -48,10 +52,10 @@ namespace HomeWork3
 
                 userInput = Console.ReadLine();
 
-                switch(userInput)
+                switch (userInput)
                 {
-                    case CommandTakeOneCard:
-                        croupier.TakeOneCard();
+                    case CommandTakeCard:
+                        croupier.TakeCard();
                         break;
                     case CommandTakeCards:
                         croupier.TakeCards();
@@ -70,14 +74,14 @@ namespace HomeWork3
         public char Suit { get; private set; }
         public ConsoleColor Color { get; private set; }
 
-        public Card (string value, char suit, ConsoleColor color)
+        public Card(string value, char suit, ConsoleColor color)
         {
             Suit = suit;
             Value = value;
             Color = color;
         }
 
-        public void ShowCard ()
+        public void Show()
         {
             Console.ForegroundColor = Color;
             Console.WriteLine($"{Suit}{Value}");
@@ -89,12 +93,12 @@ namespace HomeWork3
     {
         public List<Card> Pack { get; private set; }
 
-        public CardPack ()
+        public CardPack()
         {
             Pack = new List<Card>();
         }
 
-        public void AddCard (string cardValue, char cardSuit, ConsoleColor cardColor)
+        public void AddCard(string cardValue, char cardSuit, ConsoleColor cardColor)
         {
             Pack.Add(new Card(cardValue, cardSuit, cardColor));
         }
@@ -104,7 +108,7 @@ namespace HomeWork3
             Pack.Add(firstPack[index]);
         }
 
-        public void RemoveCard (int index)
+        public void RemoveCard(int index)
         {
             Pack.RemoveAt(index);
         }
@@ -114,14 +118,14 @@ namespace HomeWork3
             return Pack.Count;
         }
 
-        public void ShowCards (int positionX, int positionY, string text)
+        public void ShowCards(int positionX, int positionY, string text)
         {
             Console.SetCursorPosition(positionX, positionY);
             Console.WriteLine(text);
             foreach (var card in Pack)
             {
                 Console.SetCursorPosition(positionX, ++positionY);
-                card.ShowCard();
+                card.Show();
             }
         }
     }
@@ -137,7 +141,7 @@ namespace HomeWork3
             _playerHand = hand;
         }
 
-        public void TakeOneCard()
+        public void TakeCard()
         {
             int randomValue;
             Random random = new Random();
