@@ -45,19 +45,18 @@ namespace HomeWork3
         private const string CommandGener = "gener";
         private const string CommandYear = "year";
 
-        static int PlayerIdCounter = 0;
-
-        private Dictionary<int, Book> _bookStorage;
+        private Dictionary<int, Book> _library;
         private bool _isWorking;
 
         public BookStorage()
         {
-            _bookStorage = new Dictionary<int, Book>();
+            _library = new Dictionary<int, Book>();
             _isWorking = true;
         }
 
         public void Work()
         {
+            int lastID = 0;
             string userInput;
 
             while (_isWorking)
@@ -76,7 +75,7 @@ namespace HomeWork3
                         ShowBooks();
                         break;
                     case CommandAddBook:
-                        AddBook();
+                        AddBook(++lastID);
                         break;
                     case CommandRemoveBook:
                         RemoveBook();
@@ -94,7 +93,7 @@ namespace HomeWork3
             }
         }
 
-        private void AddBook()
+        private void AddBook(int id)
         {
             string name;
             string autor;
@@ -108,7 +107,7 @@ namespace HomeWork3
             gener = Console.ReadLine();
             Console.Write("Введите год написания книги: ");
             int.TryParse(Console.ReadLine(), out int year);
-            _bookStorage.Add(++PlayerIdCounter, new Book(name, autor, gener, year)); 
+            _library.Add(id, new Book(name, autor, gener, year));
         }
 
         private int GettingId()
@@ -116,40 +115,40 @@ namespace HomeWork3
             int nonExistentId = 0;
 
             Console.Write("Введите ID книги: ");
-            int.TryParse(Console.ReadLine(), out int changePlayerId);
+            int.TryParse(Console.ReadLine(), out int bookId);
 
-            if (_bookStorage.ContainsKey(changePlayerId))
+            if (_library.ContainsKey(bookId))
             {
-                return changePlayerId;
+                return bookId;
             }
             else
             {
                 Console.WriteLine("Книги с таким ID не существует");
-                return nonExistentId;
                 Console.ReadKey();
+                return nonExistentId;                
             }
         }
 
         private void RemoveBook()
         {
-            int changePlayerId = GettingId();
+            int bookId = GettingId();
 
-            if (changePlayerId > 0)
-            {
+            if (bookId > 0)
+            {                
+                _library.Remove(bookId);
                 Console.WriteLine($"Книга удалена");
-                _bookStorage.Remove(changePlayerId);
-            }
-
-            Console.ReadKey();
+                Console.ReadKey();
+            }           
         }
 
-        private bool FoundByName()
+        private void FindByName()
         {
             bool isSuccess = false;
+
             Console.Write("Введите название книги для поиска: ");
             string userSearch = Console.ReadLine();
 
-            foreach (var book in _bookStorage)
+            foreach (var book in _library)
             {
                 if (book.Value.Name == userSearch)
                 {
@@ -158,16 +157,20 @@ namespace HomeWork3
                 }
             }
 
-            return isSuccess;
+            if (isSuccess == false)
+            {
+                Console.WriteLine("Совпадений нет!");
+            }
         }
 
-        private bool FoundByAuthor()
+        private void FindByAuthor()
         {
             bool isSuccess = false;
+
             Console.Write("Введите имя автора книги для поиска: ");
             string userSearch = Console.ReadLine();
 
-            foreach (var book in _bookStorage)
+            foreach (var book in _library)
             {
                 if (book.Value.Autor == userSearch)
                 {
@@ -176,16 +179,20 @@ namespace HomeWork3
                 }
             }
 
-            return isSuccess;
+            if (isSuccess == false)
+            {
+                Console.WriteLine("Совпадений нет!");
+            }
         }
 
-        private bool FoundByGenre()
+        private void FindByGenre()
         {
             bool isSuccess = false;
+
             Console.Write("Введите жанр книги для поиска: ");
             string userSearch = Console.ReadLine();
 
-            foreach (var book in _bookStorage)
+            foreach (var book in _library)
             {
                 if (book.Value.Genre == userSearch)
                 {
@@ -194,17 +201,20 @@ namespace HomeWork3
                 }
             }
 
-            return isSuccess;
+            if (isSuccess == false)
+            {
+                Console.WriteLine("Совпадений нет!");
+            }
         }
 
-        private bool FoundByYear()
+        private void FindByYear()
         {
             bool isSuccess = false;
-            Console.Write("Введите год выпуска книги для поиска: ");
 
+            Console.Write("Введите год выпуска книги для поиска: ");
             int.TryParse(Console.ReadLine(), out int userSearch);
 
-            foreach (var book in _bookStorage)
+            foreach (var book in _library)
             {
                 if (book.Value.YearOfIssue == userSearch)
                 {
@@ -213,13 +223,15 @@ namespace HomeWork3
                 }
             }
 
-            return isSuccess;
+            if (isSuccess == false)
+            {
+                Console.WriteLine("Совпадений нет!");
+            }
         }
 
         private void SearchBooks()
         {
             string userInput;
-            bool isSuccess = false;
             Console.Clear();
             Console.WriteLine("По какому признаку будем искать:");
             Console.WriteLine($"{CommandName} - по названию");
@@ -231,22 +243,17 @@ namespace HomeWork3
             switch (userInput)
             {
                 case CommandName:
-                    isSuccess = FoundByName();
+                    FindByName();
                     break;
                 case CommandAutor:
-                    isSuccess = FoundByAuthor();
+                    FindByAuthor();
                     break;
                 case CommandGener:
-                    isSuccess = FoundByGenre();
+                    FindByGenre();
                     break;
                 case CommandYear:
-                    isSuccess = FoundByYear();
+                    FindByYear();
                     break;
-            }
-
-            if (isSuccess == false)
-            {
-                Console.WriteLine("Совпадений нет!");
             }
 
             Console.ReadKey();
@@ -254,7 +261,7 @@ namespace HomeWork3
 
         private void ShowBooks()
         {
-            foreach (var book in _bookStorage)
+            foreach (var book in _library)
             {
                 Console.Write($"{book.Key} ");
                 book.Value.ShowInfo();
