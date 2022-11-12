@@ -46,20 +46,19 @@ namespace HomeWork3
         private const string CommandYear = "year";
 
         private Dictionary<int, Book> _library;
-        private bool _isWorking;
 
         public BookStorage()
         {
             _library = new Dictionary<int, Book>();
-            _isWorking = true;
         }
 
         public void Work()
         {
             int lastID = 0;
             string userInput;
+            bool isWorking = true;
 
-            while (_isWorking)
+            while (isWorking)
             {
                 Console.Clear();
                 Console.WriteLine($"{CommandShowAllBooks} - Показать книги");
@@ -84,7 +83,7 @@ namespace HomeWork3
                         SearchBooks();
                         break;
                     case CommandExit:
-                        _isWorking = false;
+                        isWorking = false;
                         break;
                     default:
                         Console.WriteLine("Чёт какая-то ерунда!");
@@ -110,7 +109,7 @@ namespace HomeWork3
             _library.Add(id, new Book(name, autor, gener, year));
         }
 
-        private int GettingId()
+        private int GettId()
         {
             int nonExistentId = 0;
 
@@ -131,7 +130,7 @@ namespace HomeWork3
 
         private void RemoveBook()
         {
-            int bookId = GettingId();
+            int bookId = GettId();
 
             if (bookId > 0)
             {                
