@@ -1,0 +1,124 @@
+using System;
+using System.Collections;
+using System.Linq;
+using System.Collections.Generic;
+
+namespace DataBase
+{
+    public static class Program
+    {
+        public static void Main()
+        {
+        	
+        	Warrior war = new Warrior ("Pit", 100, 25, 1000, 500);
+        	Warrior mage = new Warrior ("Lim", 150, 10, 850, 1000);
+        	
+        	war.ShowInfo();
+        	mage.ShowInfo();
+        	
+        	while (true)
+        	{
+        		war.TakeDamage(mage.MinDamage, mage.MaxDamage);
+        		mage.TakeDamage(war.MinDamage, war.MaxDamage);
+        		war.ShowFight();
+        		mage.ShowFight();
+        		Console.WriteLine();
+        		
+        		if(war.Health <= 0 || mage.Health <= 0)
+        		{
+        			break;
+        		}
+        	}
+        	
+        }
+    }
+    
+    class Warrior
+    {
+    	public string Name { get; private set; }
+    	public int MinDamage { get; private set; }
+        public int MaxDamage { get; private set; }
+    	public int Armor { get; private set; }
+    	public int Health { get; private set; }
+    	public int MaxHealth { get; private set; }
+    	public int Energy { get; private set; }
+    	public int MaxEnergy { get; private set; }
+    	
+    	private Double _damageKoef;
+    	
+    	public Warrior(string name, int damage, int armor, int health, int energy)
+    	{
+    		_damageKoef = 0.05*damage;
+    		Name = name;
+    		MinDamage = damage - (int)_damageKoef;
+    		MaxDamage = damage + (int)_damageKoef;
+    		Armor = armor;
+    		Health = health;
+    		MaxHealth = health;
+    		Energy = energy;
+    		MaxEnergy = energy;
+    	}
+    	
+    	public void ShowInfo ()
+    	{
+    		DrawBar(ConsoleColor.Green, Health, MaxHealth);
+    		DrawBar(ConsoleColor.Yellow, Energy, MaxEnergy);
+    		Console.WriteLine($"Damage {MinDamage} - {MaxDamage}");
+    		Console.WriteLine($"Armor {Armor}");
+    	}
+    	
+    	public void ShowFight ()
+    	{
+    		DrawFightBar(ConsoleColor.Green, Health, MaxHealth);
+    		Console.WriteLine($"{Name} {Health}/{MaxHealth}");
+    	}
+    	
+    	private void DrawBar (ConsoleColor color, int realResurs, int maxResurs)
+    	{
+    		Console.Write("[");
+    		Console.BackgroundColor = color;
+    		Console.Write($"{realResurs}/{maxResurs}");
+    		Console.ResetColor();
+            Console.WriteLine("]");	
+    	}
+    	
+    	private void DrawFightBar (ConsoleColor color, int realResurs, int maxResurs)
+    	{
+    		int barPoint;
+    		int temp = 0;
+    		int n = 20;
+    		
+    		Console.Write("[");
+    		Console.BackgroundColor = color;
+    		barPoint = maxResurs/n;
+    		
+    		for (int i = 0; i < n; i++)
+    		{
+    			if (temp >= realResurs)
+    			{
+    				Console.ResetColor();
+    			}
+    			temp += barPoint;
+    			Console.Write (" ");
+    		}
+    		
+            Console.Write("]");
+    	}
+    	
+    	public void TakeDamage (int minDamage, int maxDamage)
+    	{
+    		int guaranteedDamage = 1;
+    		Random random = new Random();
+    		int damage = random.Next(minDamage, maxDamage);
+    		
+    		if (damage > Armor)
+    		{
+    			Health -= damage - Armor;
+    		}
+    		else
+    		{
+    			Health -= guaranteedDamage;
+    		}
+    	}
+    }
+}
