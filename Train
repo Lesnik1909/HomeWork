@@ -1,0 +1,294 @@
+using System;
+using System.Collections.Generic;
+
+namespace TrainStaishon
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Administrator admin = new Administrator();
+
+            admin.Work();
+        }
+    }
+
+    enum Carriage
+    {
+        small = 12,
+        middle = 24,
+        big = 36,
+        huge = 64
+    }
+
+    class Train
+    {
+        private int _passenger;
+        private List<Carriage> _railwayCarriage;
+        private string _departureDirection;
+        private string _arrivalDirection;
+        private bool _isSent;
+        private bool _isFormed;
+
+        public Train (string departure, string arrival)
+        {
+            _railwayCarriage = new List<Carriage>();
+            _isFormed = false;
+            _isSent = false;
+            _departureDirection = departure;
+            _arrivalDirection = arrival;
+        }
+
+        private void ChangeTextColor (string text, ConsoleColor color)
+        {
+            Console.ForegroundColor = color;
+            Console.WriteLine(text);
+            Console.ResetColor();
+        }
+
+        public void Send ()
+        {
+            if (_isFormed)
+            {
+                _isSent = true;
+            }
+            else
+            {
+                Console.WriteLine("Поезд не сформирован!");
+                Console.ReadKey();
+            }
+        }
+
+        public void SellTickets (int tickets)
+        {
+            _passenger = tickets;
+        }
+
+        public void CreateTrain ()
+        {
+            int places = 0;
+
+            while (places < _passenger)
+            {
+                Console.Clear();
+                Console.WriteLine($"Пассажиров {_passenger}/{places} мест");
+                Console.WriteLine("Какой вагон добавить?");
+                Console.WriteLine($"1 - {Carriage.small} ({(int)Carriage.small} мест)");
+                Console.WriteLine($"2 - {Carriage.middle} ({(int)Carriage.middle} места)");
+                Console.WriteLine($"3 - {Carriage.big} ({(int)Carriage.big} мест)");
+                Console.WriteLine($"4 - {Carriage.huge} ({(int)Carriage.huge} места)");
+
+                switch (Console.ReadLine())
+                {
+                    case "1":
+                        _railwayCarriage.Add(Carriage.small);
+                        places += (int)Carriage.small;
+                        break;
+                    case "2":
+                        _railwayCarriage.Add(Carriage.middle);
+                        places += (int)Carriage.middle;
+                        break;
+                    case "3":
+                        _railwayCarriage.Add(Carriage.big);
+                        places += (int)Carriage.big;
+                        break;
+                    case "4":
+                        _railwayCarriage.Add(Carriage.huge);
+                        places += (int)Carriage.huge;
+                        break;
+                    default:
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("Такого вагона нет!");
+                        Console.ResetColor();
+                        break;
+                }
+            }
+
+            _isFormed = true;
+        }
+
+        public void ShowTrain ()
+        {
+            int count = 1;
+
+            Console.Clear();
+            Console.WriteLine($"Проданно {_passenger} билетов на поезд");
+
+            if (_isFormed)
+            {
+                Console.WriteLine("Поезд состоит из: ");
+
+                foreach (var carriage in _railwayCarriage)
+                {
+                    Console.WriteLine($"{count++}) {carriage} ({(int)carriage} мест)");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Поезд ещё не сформирован!");
+            }
+
+            Console.ReadKey();
+        }
+
+        public void ShowInfo ()
+        {
+            Console.Write($"{_departureDirection} - {_arrivalDirection}.");
+
+            if (_isFormed)
+            {
+                if (_isSent)
+                {
+                    ChangeTextColor(" в пути", ConsoleColor.Green);
+                }
+                else
+                {
+                    ChangeTextColor(" ожидает отправления", ConsoleColor.Yellow);
+                }
+            }
+            else
+            {
+                ChangeTextColor(" ожидает формирования", ConsoleColor.Red);
+            }
+        }
+    }
+
+    class Administrator
+    {
+        private const string _commandAdd = "add";
+        private const string _commandShow = "show";
+        private const string _commandSend = "send";
+        private const string _commandCreate = "new";
+        private const string _commandExit = "exit";
+
+        private int _count = 1;
+        private Dictionary<int, Train> _trains;
+
+        public Administrator ()
+        {
+            _trains = new Dictionary<int, Train>();
+        }
+
+        private void ShowInfo ()
+        {
+            int infoPositionY = 0;
+            int infoPositionX = 30;
+
+            foreach (var train in _trains)
+            {
+                Console.SetCursorPosition(infoPositionX, infoPositionY++);
+                Console.Write($"{train.Key} ");
+                train.Value.ShowInfo();
+            }
+
+            Console.SetCursorPosition(0, 0);
+        }
+
+        private void AddTrain()
+        {
+            Console.WriteLine("Откуда едет поезд");
+            string departure = Console.ReadLine();
+            Console.WriteLine("Куда едет поезд");
+            string arrival = Console.ReadLine();
+
+            _trains.Add(_count, new Train(departure, arrival));
+            SellTickets(_count);
+            _count++;
+        }
+
+        private void AddTrain (string departure, string arrival)
+        {
+            _trains.Add(_count, new Train(departure, arrival));
+            SellTickets(_count);
+            _count++;
+        }
+
+        private int ChoiseTrain ()
+        {
+            Console.WriteLine("Какой поезд отправить?");
+            int.TryParse(Console.ReadLine(), out int userInput);
+
+            if (_trains.ContainsKey(userInput) == false)
+            {                
+                userInput = 0;
+                Console.WriteLine("Такого поезда нет!");
+                Console.ReadKey();
+            }
+
+            return userInput;
+        }
+        
+        private void SendTrain (int count)
+        {
+            if(count > 0)
+            {
+                _trains[count].Send();
+            }
+        }
+
+        private void CreateTrain(int count)
+        {
+            if (count > 0)
+            {
+                _trains[count].CreateTrain();
+            }            
+        }
+
+        private void ShowTrain(int count)
+        {
+            if (count > 0)
+            {
+                _trains[count].ShowTrain();
+            }
+        }
+
+        private void SellTickets(int userInput)
+        {
+            Random random = new Random();
+            int minTickets = 1;
+            int maxTickets = 100;
+
+            _trains[userInput].SellTickets(random.Next(minTickets, maxTickets));
+        }
+
+        public void Work ()
+        {
+            bool isWork = true;
+
+            AddTrain("Москва", "Челябинск");
+            AddTrain("Калининград", "Пермь");
+            AddTrain("Иваново", "Тюмень");
+
+            while (isWork)
+            {
+                Console.Clear();
+
+                ShowInfo();
+                Console.WriteLine($" {_commandAdd}  - Добавление");
+                Console.WriteLine($" {_commandSend} - Отправить");
+                Console.WriteLine($" {_commandCreate}  - Сформировать");
+                Console.WriteLine($" {_commandShow} - Показать поезд");
+                Console.WriteLine($" {_commandExit} - Выход");
+
+                switch (Console.ReadLine())
+                {
+                    case _commandAdd:
+                        AddTrain();
+                        break;
+                    case _commandSend:
+                        SendTrain(ChoiseTrain());
+                        break;
+                    case _commandCreate:
+                        CreateTrain(ChoiseTrain());
+                        break;
+                    case _commandShow:
+                        ShowTrain(ChoiseTrain());
+                        break;
+                    case _commandExit:
+                        isWork = false;
+                        break;
+                }
+            }
+        }
+    }
+}
