@@ -1,0 +1,322 @@
+using System;
+using System.Collections.Generic;
+
+namespace Shop
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Shoping shoping = new Shoping();
+
+            shoping.Work();
+        }
+    }
+
+    class Item
+    {
+        public string Name { get; private set; }
+        public int Number { get; private set; }
+
+        public Item(string name, int number)
+        {
+            Name = name;
+            Number = number;
+
+        }
+
+        public void Add(int addNumber)
+        {
+            Number += addNumber;
+        }
+
+        public void Remove(int removeNumber)
+        {
+            Number -= removeNumber;
+        }
+
+        public void ShowInfo()
+        {
+            Console.Write($"{Name} {Number} шт. ");
+        }
+    }
+
+    class Cell
+    {
+        public int Price { get; private set; }
+
+        private Item _item;        
+
+        public Cell(string name, int number, int price)
+        {
+            Price = price;
+            _item = new Item(name, number);
+        }
+
+        public void ShowInfo()
+        {
+            _item.ShowInfo();
+            Console.WriteLine($"за {Price} золотых");
+        }
+
+        public string Name()
+        {
+            return _item.Name;
+        }
+
+        public int Nunmber()
+        {
+            return _item.Number;
+        }
+
+        public void Add(int number)
+        {
+            _item.Add(number);
+        }
+
+        public void Remove(int number)
+        {
+            _item.Remove(number);
+        }
+    }
+
+    class Player
+    {
+        public int Money { get; private set; }
+
+        private Inventory _bag;
+        private Random _random = new Random();
+        private int _minMoney = 100;
+        private int _maxMoney = 1000;
+
+        public Player()
+        {
+            Money = _random.Next(_minMoney, _maxMoney);
+            _bag = new Inventory();
+        }
+
+        public void Buy(string name, int number, int price)
+        {
+            Money -= number * price;
+            _bag.AddItem(new Cell(name, number, price));
+        }
+
+        public void ShowBag()
+        {
+            int bagPositionX = 0;
+            int bagPositionY = 15;
+
+            Console.SetCursorPosition(bagPositionX, bagPositionY);
+            Console.WriteLine($"У тебя есть {Money} золотых");
+            Console.WriteLine("А в сумке:");
+
+            _bag.ShowInfo();
+
+            Console.SetCursorPosition(0, 0);
+        }
+    }
+
+    class Shop
+    {
+        private Inventory _stall;
+
+        public Shop()
+        {
+            _stall = new Inventory();
+        }
+
+        public void Add()
+        {
+            Console.Write("Название товара: ");
+            string name = Console.ReadLine();
+
+            Console.Write("Сколько штук: ");
+            int.TryParse(Console.ReadLine(), out int number);
+
+            Console.Write("По какой цене: ");
+            int.TryParse(Console.ReadLine(), out int price);
+
+            _stall.AddItem(new Cell(name, number, price));
+        }
+
+        public void Sell(int count, int number)
+        {
+            _stall.RemoveItem(count, number);
+        }
+
+        public bool CheckAvailabilityGoods(int count, int number)
+        {
+            return _stall.CheckAvailabilityGoods(count, number);
+        }
+
+        public int ReturnPrice(int count)
+        {
+            return _stall.ReturnPrice(count);
+        }
+
+        public string ReturnName(int count)
+        {
+            return _stall.ReturnName(count);
+        }
+
+        public void ShowStall()
+        {
+            Console.Clear();
+
+            Console.WriteLine("Магазин:");
+            _stall.ShowInfo();
+
+            Console.ReadKey();
+        }
+    }
+
+    class Inventory
+    {
+        private List<Cell> _bag;
+
+        public Inventory()
+        {
+            _bag = new List<Cell>();
+        }
+
+        public void AddItem(Cell goods)
+        {
+            bool isNew = true;
+
+            foreach (var item in _bag)
+            {
+                if (item.Name() == goods.Name())
+                {
+                    isNew = false;
+                    item.Add(goods.Nunmber());
+                }
+            }
+
+            if (isNew)
+            {
+                _bag.Add(goods);
+            }
+        }
+
+        public void RemoveItem(int count, int number)
+        {
+            _bag[count].Remove(number);           
+        }
+
+        public bool CheckAvailabilityGoods (int count, int number)
+        {
+            if (_bag[count].Nunmber() - number < 0)
+            {
+                Console.WriteLine($"Недостаточно товара");
+                Console.ReadKey();
+
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        public int ReturnPrice(int count)
+        {
+            return _bag[count].Price;
+        }
+
+        public string ReturnName(int count)
+        {
+            return _bag[count].Name();
+        }
+
+        public void ShowInfo()
+        {
+            int i = 0;
+
+            foreach (var item in _bag)
+            {
+                Console.Write($"{++i} ");
+                item.ShowInfo();
+            }
+        }
+    }
+
+    class Shoping
+    {
+        private const string CommandShowStall = "show";
+        private const string CommandBuy = "buy";
+        private const string CommandNew = "new";
+        private const string CommandExit = "exit";
+
+        private Shop _shop;
+        private Player _player;
+
+        public Shoping()
+        {
+            _shop = new Shop();
+            _player = new Player();
+        }
+
+        public void Work()
+        {
+            bool isWork = true;
+            string userIput;
+
+            while (isWork)
+            {
+                Console.Clear();
+
+                _player.ShowBag();
+
+                Console.WriteLine($" {CommandShowStall} - для просмотра магазина");
+                Console.WriteLine($" {CommandBuy}  - для покупки товара");
+                Console.WriteLine($" {CommandNew}  - для поступление нового в магазин");
+                Console.WriteLine($" {CommandExit} - для выход");
+
+                userIput = Console.ReadLine();
+
+                switch (userIput)
+                {
+                    case CommandShowStall:
+                        _shop.ShowStall();
+                        break;
+
+                    case CommandBuy:
+                        Sell();
+                        break;
+
+                    case CommandNew:
+                        _shop.Add();
+                        break;
+
+                    case CommandExit:
+                        isWork = false;
+                        break;
+                }
+            }
+        }
+
+        private void Sell ()
+        {
+            Console.Write("Что покупаем: ");
+            int.TryParse(Console.ReadLine(), out int count);
+            count--;
+
+            Console.Write("Сколько: ");
+            int.TryParse(Console.ReadLine(), out int number);
+
+            if (_shop.CheckAvailabilityGoods(count, number))
+            {
+                if (_shop.ReturnPrice(count) * number <= _player.Money)
+                {
+                    _player.Buy(_shop.ReturnName(count), number, _shop.ReturnPrice(count));
+                    _shop.Sell(count, number);
+                }
+                else
+                {
+                    Console.WriteLine("Не хватает денег");
+                    Console.ReadKey();
+                }
+            }            
+        }
+    }
+}
