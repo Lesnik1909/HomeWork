@@ -1,3 +1,7 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+
 namespace CardPack
 {
     class Program
@@ -15,8 +19,8 @@ namespace CardPack
             string userInput;
             Dictionary<char, ConsoleColor> suits = new Dictionary<char, ConsoleColor>();
             string[] cardValues = new string[] { "T", "K", "D", "V", "10", "9", "8", "7", "6" };
-            CardPack pack = new CardPack();
-            CardPack hand = new CardPack();
+            Pack pack = new Pack();
+            Pack hand = new Pack();
 
             suits.Add('\u2663', Black);
             suits.Add('\u2660', Black);
@@ -67,16 +71,16 @@ namespace CardPack
 
     class Card
     {
-        public string Value { get; private set; }
-        public char Suit { get; private set; }
-        public ConsoleColor Color { get; private set; }
-
         public Card(string value, char suit, ConsoleColor color)
         {
             Suit = suit;
             Value = value;
             Color = color;
         }
+
+        public string Value { get; private set; }
+        public char Suit { get; private set; }
+        public ConsoleColor Color { get; private set; }
 
         public void Show()
         {
@@ -86,11 +90,11 @@ namespace CardPack
         }
     }
 
-    class CardPack
+    class Pack
     {
         private List<Card> _pack;
 
-        public CardPack()
+        public Pack()
         {
             _pack = new List<Card>();
         }
@@ -99,13 +103,12 @@ namespace CardPack
         {
             _pack.Add(new Card(cardValue, cardSuit, cardColor));
         }
-
         public void TakeCard(Card card)
         {
             _pack.Add(card);
         }
 
-        public Card GetACard(int index)
+        public Card GetCard(int index)
         {
             return _pack[index];
         }
@@ -134,12 +137,12 @@ namespace CardPack
 
     class Player
     {
-        private CardPack _cardsPack;
-        private CardPack _hand;
+        private Pack _pack;
+        private Pack _hand;
 
-        public Player(CardPack pack, CardPack hand)
+        public Player(Pack pack, Pack hand)
         {
-            _cardsPack = pack;
+            _pack = pack;
             _hand = hand;
         }
 
@@ -159,7 +162,7 @@ namespace CardPack
                 int.TryParse(Console.ReadLine(), out cardCounter);
             }           
 
-            if ((cardCounter > _cardsPack.CardInPack()) || (cardCounter < 0))
+            if ((cardCounter > _pack.CardInPack()) || (cardCounter < 0))
             {
                 Console.WriteLine("В колоде нет столько карт");
                 Console.ReadKey();
@@ -168,9 +171,9 @@ namespace CardPack
             {
                 for (int i = 0; i < cardCounter; i++)
                 {
-                    randomValue = random.Next(0, _cardsPack.CardInPack());
-                    _hand.TakeCard(_cardsPack.GetACard(randomValue));
-                    _cardsPack.RemoveCard(randomValue);
+                    randomValue = random.Next(0, _pack.CardInPack());
+                    _hand.TakeCard(_pack.GetCard(randomValue));
+                    _pack.RemoveCard(randomValue);
                 }
             }
         }
